@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Logo } from "@/components/shared/logo";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -9,7 +8,6 @@ export function Footer() {
       <div className="container mx-auto grid grid-cols-1 gap-8 px-4 py-8 md:grid-cols-3">
         <div className="flex flex-col items-start gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <Logo className="h-8 w-8 text-primary" />
             <span className="font-headline text-xl font-bold">CyberShield</span>
           </Link>
           <p className="text-sm text-muted-foreground">
