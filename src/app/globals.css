@@ -61,6 +61,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%239C92AC' fill-opacity='0.06'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20-5-5L6 0zm25 40l5 20-5-5-5 5zm25 0l5 20-5-5-5 5zM11 40l5 20-5-5-5 5zM6 80l5-20-5 5L6 80zm25-40l5-20-5 5-5-5zm25 0l5-20-5 5-5-5zM6 40l5-20-5 5L6 40zm50-10L51 0l5 5L56 30zm25 40l-5-20 5-5 5 20-5 5zm-25 0l-5-20 5-5 5 20-5 5zM36 80l5-20-5 5-5 5zm25-40l5-20-5 5-5-5z'/%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.06' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
   }
 }
