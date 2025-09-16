@@ -4,38 +4,38 @@
     {
       "id": "hero-image",
       "description": "A digital shield protecting a user on a laptop, symbolizing online safety and cybersecurity.",
-      "imageUrl": "https://picsum.photos/seed/security-shield/600/400",
-      "imageHint": "digital security"
+      "imageUrl": "https://picsum.photos/seed/hacker/600/400",
+      "imageHint": "hacker security"
     },
     {
       "id": "carousel-1",
       "description": "A smartphone displaying a fake delivery notification text message.",
-      "imageUrl": "https://picsum.photos/seed/package-alert/600/400",
-      "imageHint": "delivery scam"
+      "imageUrl": "https://picsum.photos/seed/phone-scam/600/400",
+      "imageHint": "phone scam"
     },
     {
       "id": "carousel-2",
       "description": "A person looking at a fraudulent email on a computer screen, indicating a phishing attempt.",
-      "imageUrl": "https://picsum.photos/seed/suspicious-email/600/400",
-      "imageHint": "phishing email"
+      "imageUrl": "https://picsum.photos/seed/fraud-alert/600/400",
+      "imageHint": "fraud alert"
     },
     {
       "id": "carousel-3",
       "description": "A person looks skeptically at a too-good-to-be-true job offer on a laptop.",
-      "imageUrl": "https://picsum.photos/seed/online-job/600/400",
-      "imageHint": "job scam"
+      "imageUrl": "https://picsum.photos/seed/laptop-warning/600/400",
+      "imageHint": "laptop warning"
     },
     {
       "id": "carousel-4",
       "description": "A downward-trending graph on a tablet with stacks of coins, representing a financial scam.",
-      "imageUrl": "https://picsum.photos/seed/financial-loss/600/400",
-      "imageHint": "investment scam"
+      "imageUrl": "https://picsum.photos/seed/crypto-theft/600/400",
+      "imageHint": "crypto theft"
     },
     {
       "id": "carousel-5",
       "description": "A computer screen showing a red warning pop-up about a virus detection.",
-      "imageUrl": "https://picsum.photos/seed/system-warning/600/400",
-      "imageHint": "tech support"
+      "imageUrl": "https://picsum.photos/seed/virus-alert/600/400",
+      "imageHint": "virus alert"
     }
   ]
 }
