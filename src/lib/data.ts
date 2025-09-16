@@ -8,10 +8,12 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export async function getTrendingScams({
   country = 'all',
   type = 'all',
+  platform = 'all',
   limit,
 }: {
   country?: string;
   type?: string;
+  platform?: string;
   limit?: number;
 } = {}): Promise<Scam[]> {
   await delay(100);
@@ -26,6 +28,12 @@ export async function getTrendingScams({
   if (type.toLowerCase() !== 'all') {
     allScams = allScams.filter(
       scam => scam.type.toLowerCase() === type.toLowerCase()
+    );
+  }
+
+  if (platform.toLowerCase() !== 'all') {
+    allScams = allScams.filter(
+      scam => scam.platform.toLowerCase() === platform.toLowerCase()
     );
   }
 

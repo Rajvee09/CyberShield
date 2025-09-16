@@ -34,13 +34,30 @@ const scamTypes = [
   'Tech Support',
   'Delivery',
 ];
-const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Nigeria', 'India'];
+const countries = [
+  'USA',
+  'UK',
+  'Canada',
+  'Australia',
+  'Germany',
+  'Nigeria',
+  'India',
+];
+
+const platforms = [
+  'Email',
+  'Website',
+  'Social Media',
+  'Phone Call',
+  'Text Message',
+];
 
 export default function TrendingPage() {
   const [scams, setScams] = useState<ScamWithUser[]>([]);
   const [filteredScams, setFilteredScams] = useState<ScamWithUser[]>([]);
   const [country, setCountry] = useState('all');
   const [type, setType] = useState('all');
+  const [platform, setPlatform] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -72,8 +89,13 @@ export default function TrendingPage() {
         item => item.scam.type.toLowerCase() === type.toLowerCase()
       );
     }
+    if (platform !== 'all') {
+      result = result.filter(
+        item => item.scam.platform.toLowerCase() === platform.toLowerCase()
+      );
+    }
     setFilteredScams(result);
-  }, [country, type, scams]);
+  }, [country, type, platform, scams]);
 
   return (
     <div className="bg-background">
@@ -115,7 +137,7 @@ export default function TrendingPage() {
                   </SelectContent>
                 </Select>
                 <Select onValueChange={setType} value={type}>
-                  <SelectTrigger>
+                  <SelectTrigger className="mb-2">
                     <SelectValue placeholder="Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -123,6 +145,19 @@ export default function TrendingPage() {
                     {scamTypes.map(t => (
                       <SelectItem key={t} value={t}>
                         {t}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select onValueChange={setPlatform} value={platform}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Platform" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Platforms</SelectItem>
+                    {platforms.map(p => (
+                      <SelectItem key={p} value={p}>
+                        {p}
                       </SelectItem>
                     ))}
                   </SelectContent>
