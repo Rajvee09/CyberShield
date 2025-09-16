@@ -34,19 +34,8 @@ export default async function Home() {
                 className="transform transition-transform duration-200 hover:-translate-y-1"
               >
                 <Link href="/scam-checker">
-                  Check a Message
+                  Analyse a Message
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="transform transition-transform duration-200 hover:-translate-y-1"
-              >
-                <Link href="/community">
-                  Explore Reports
-                  <Shield className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
             </div>
