@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -27,6 +27,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const scamTypes = [
   'Phishing',
@@ -55,8 +56,13 @@ const FormSchema = z.object({
 });
 
 export default function ReportScamForm() {
+  const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -74,14 +80,36 @@ export default function ReportScamForm() {
     // For this demo, we'll just simulate a delay and show a success message.
     console.log('Scam Report Submitted:', data);
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setIsLoading(false);
     toast({
       title: 'Report Submitted!',
-      description: "Thank you for helping keep the community safe. Your report has been received.",
+      description:
+        'Thank you for helping keep the community safe. Your report has been received.',
     });
     form.reset();
   }
+
+  if (!isClient) {
+    return (
+      <Card className="shadow-lg">
+        <CardHeader>
+          <CardTitle className="font-headline text-2xl">
+            New Scam Report
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <Skeleton className="h-10 w-1/2" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-28" />
+        </CardContent>
+      </Card>
+    );
+  }
+
 
   return (
     <Card className="shadow-lg">
@@ -100,7 +128,10 @@ export default function ReportScamForm() {
                 <FormItem>
                   <FormLabel>Scam Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., 'Urgent Package Delivery Text'" {...field} />
+                    <Input
+                      placeholder="e.g., 'Urgent Package Delivery Text'"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     A short, descriptive title for the scam.
@@ -155,7 +186,7 @@ export default function ReportScamForm() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="country"
