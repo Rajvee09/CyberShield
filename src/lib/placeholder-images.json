@@ -1,3 +1,41 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "A person on a laptop with a shield icon overlay, representing digital security.",
+      "imageUrl": "https://picsum.photos/seed/cybersecurity/600/400",
+      "imageHint": "digital security"
+    },
+    {
+      "id": "carousel-1",
+      "description": "Close-up of a smartphone screen showing a fake package delivery notification.",
+      "imageUrl": "https://picsum.photos/seed/delivery-scam/600/400",
+      "imageHint": "delivery scam"
+    },
+    {
+      "id": "carousel-2",
+      "description": "An email inbox with a phishing email highlighted, showing a sense of urgency.",
+      "imageUrl": "https://picsum.photos/seed/phishing-email/600/400",
+      "imageHint": "phishing email"
+    },
+    {
+      "id": "carousel-3",
+      "description": "A person looking at a computer screen with a fake job offer.",
+      "imageUrl": "https://picsum.photos/seed/job-offer/600/400",
+      "imageHint": "job offer"
+    },
+    {
+      "id": "carousel-4",
+      "description": "A stock market chart on a screen with a person looking concerned, representing an investment scam.",
+      "imageUrl": "https://picsum.photos/seed/investment-scam/600/400",
+      "imageHint": "investment scam"
+    },
+    {
+      "id": "carousel-5",
+      "description": "A pop-up on a laptop screen claiming a virus has been detected.",
+      "imageUrl": "https://picsum.photos/seed/tech-support/600/400",
+      "imageHint": "tech support"
+    }
+  ]
 }

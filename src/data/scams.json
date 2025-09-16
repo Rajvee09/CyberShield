@@ -1,0 +1,62 @@
+[
+  {
+    "id": "scam-1",
+    "title": "Urgent: Your Package is On Hold",
+    "description": "Received a text message claiming a package from a well-known delivery service is on hold. It asks me to click a link to reschedule delivery and pay a small fee. The website looks suspicious.",
+    "country": "USA",
+    "type": "Delivery",
+    "imageId": "carousel-1",
+    "authorId": "user-1",
+    "createdAt": "2024-07-20T10:00:00Z"
+  },
+  {
+    "id": "scam-2",
+    "title": "Suspicious Account Activity - Action Required",
+    "description": "An email pretending to be from my bank states that there has been suspicious activity on my account. It urges me to log in via a provided link to verify my identity. The sender's email address is slightly off.",
+    "country": "UK",
+    "type": "Phishing",
+    "imageId": "carousel-2",
+    "authorId": "user-2",
+    "createdAt": "2024-07-22T14:30:00Z"
+  },
+  {
+    "id": "scam-3",
+    "title": "Exclusive Work-From-Home Job Opportunity",
+    "description": "A LinkedIn message offered a high-paying remote data entry job. The 'recruiter' asked for my personal information and a small fee for 'training materials' before any formal interview process.",
+    "country": "Canada",
+    "type": "Fake Job",
+    "imageId": "carousel-3",
+    "authorId": "user-3",
+    "createdAt": "2024-07-21T09:00:00Z"
+  },
+  {
+    "id": "scam-4",
+    "title": "Guaranteed High Returns on Crypto Investment",
+    "description": "An ad on social media promoted a new cryptocurrency with guaranteed 50% weekly returns. The platform required a minimum investment and showed fake profit gains, but withdrawals are impossible.",
+    "country": "Australia",
+    "type": "Investment",
+    "imageId": "carousel-4",
+    "authorId": "user-4",
+    "createdAt": "2024-07-19T18:00:00Z"
+  },
+  {
+    "id": "scam-5",
+    "title": "Warning: Your Computer is Infected!",
+    "description": "A loud pop-up appeared on a website, claiming my computer was infected with multiple viruses. It provided a toll-free number to call for 'Microsoft Certified' tech support. They wanted remote access to my PC.",
+    "country": "USA",
+    "type": "Tech Support",
+    "imageId": "carousel-5",
+    "authorId": "user-1",
+    "createdAt": "2024-07-23T11:45:00Z"
+  },
+  {
+    "id": "scam-6",
+    "title": "Claim Your Free Government Grant",
+    "description": "Got a Facebook message from someone claiming to work for a government agency. They said I was eligible for a free grant but needed to pay a 'processing fee' via gift cards to receive the funds.",
+    "country": "USA",
+    "type": "Phishing",
+    "imageId": "carousel-2",
+    "authorId": "user-2",
+    "createdAt": "2024-07-24T08:00:00Z"
+  }
+]

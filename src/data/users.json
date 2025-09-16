@@ -1,0 +1,22 @@
+[
+  {
+    "id": "user-1",
+    "name": "Alex Johnson",
+    "avatarUrl": "https://i.pravatar.cc/150?u=user-1"
+  },
+  {
+    "id": "user-2",
+    "name": "Maria Garcia",
+    "avatarUrl": "https://i.pravatar.cc/150?u=user-2"
+  },
+  {
+    "id": "user-3",
+    "name": "Chen Wei",
+    "avatarUrl": "https://i.pravatar.cc/150?u=user-3"
+  },
+  {
+    "id": "user-4",
+    "name": "Fatima Al-Sayed",
+    "avatarUrl": "https://i.pravatar.cc/150?u=user-4"
+  }
+]
