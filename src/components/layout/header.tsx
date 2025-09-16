@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/scam-checker', label: 'Scam Checker' },
   { href: '/community', label: 'Community Reports' },
   { href: '/prevention', label: 'Prevention' },
+  { href: '/#trending', label: 'Trending Scams' },
 ];
 
 export function Header() {
