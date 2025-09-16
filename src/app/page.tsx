@@ -81,11 +81,6 @@ export default async function Home() {
               </p>
             </div>
             <div className="flex flex-col gap-4 sm:flex-row">
-              <Button asChild variant="outline">
-                <Link href="/#trending">
-                  <TrendingUp className="mr-2 h-4 w-4" /> Trending Scams
-                </Link>
-              </Button>
               <Button asChild>
                 <Link href="/community">
                   View All Reports <ArrowRight className="ml-2 h-4 w-4" />
