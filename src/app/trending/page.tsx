@@ -34,7 +34,7 @@ const scamTypes = [
   'Tech Support',
   'Delivery',
 ];
-const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Nigeria'];
+const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Nigeria', 'India'];
 
 export default function TrendingPage() {
   const [scams, setScams] = useState<ScamWithUser[]>([]);
