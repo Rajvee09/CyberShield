@@ -1,62 +1,93 @@
+
 [
   {
     "id": "scam-1",
     "title": "Urgent: Your Package is On Hold",
-    "description": "Received a text message claiming a package from a well-known delivery service is on hold. It asks me to click a link to reschedule delivery and pay a small fee. The website looks suspicious.",
+    "description": "Received a text message claiming a package from a well-known delivery service is on hold. It asks me to click a link to reschedule delivery and pay a small 'redelivery fee.' The website it linked to looked very convincing, but the URL was slightly misspelled. I almost entered my credit card details.",
     "country": "USA",
     "type": "Delivery",
     "imageId": "carousel-1",
     "authorId": "user-1",
-    "createdAt": "2024-07-20T10:00:00Z"
+    "createdAt": "2024-07-28T10:00:00Z"
   },
   {
     "id": "scam-2",
     "title": "Suspicious Account Activity - Action Required",
-    "description": "An email pretending to be from my bank states that there has been suspicious activity on my account. It urges me to log in via a provided link to verify my identity. The sender's email address is slightly off.",
+    "description": "An email pretending to be from my bank stated that there has been suspicious activity on my account. It urged me to log in via a provided link to verify my identity immediately or my account would be frozen. The sender's email address was slightly off, using '.co' instead of '.com'.",
     "country": "UK",
     "type": "Phishing",
     "imageId": "carousel-2",
     "authorId": "user-2",
-    "createdAt": "2024-07-22T14:30:00Z"
+    "createdAt": "2024-07-27T14:30:00Z"
   },
   {
     "id": "scam-3",
     "title": "Exclusive Work-From-Home Job Opportunity",
-    "description": "A LinkedIn message offered a high-paying remote data entry job. The 'recruiter' asked for my personal information and a small fee for 'training materials' before any formal interview process.",
+    "description": "A LinkedIn message offered a high-paying remote data entry job. The 'recruiter' conducted a quick chat interview and then asked for my personal information and a fee for 'training materials' and a background check before any formal contract was signed. They insisted on payment via a peer-to-peer payment app.",
     "country": "Canada",
     "type": "Fake Job",
     "imageId": "carousel-3",
     "authorId": "user-3",
-    "createdAt": "2024-07-21T09:00:00Z"
+    "createdAt": "2024-07-26T09:00:00Z"
   },
   {
     "id": "scam-4",
     "title": "Guaranteed High Returns on Crypto Investment",
-    "description": "An ad on social media promoted a new cryptocurrency with guaranteed 50% weekly returns. The platform required a minimum investment and showed fake profit gains, but withdrawals are impossible.",
+    "description": "An ad on social media promoted a new cryptocurrency with guaranteed 50% weekly returns. The platform required a minimum investment and showed fake profit gains, but withdrawals are impossible. They kept asking for more money to 'unlock' my funds, citing fake taxes and fees.",
     "country": "Australia",
     "type": "Investment",
     "imageId": "carousel-4",
     "authorId": "user-4",
-    "createdAt": "2024-07-19T18:00:00Z"
+    "createdAt": "2024-07-25T18:00:00Z"
   },
   {
     "id": "scam-5",
     "title": "Warning: Your Computer is Infected!",
-    "description": "A loud pop-up appeared on a website, claiming my computer was infected with multiple viruses. It provided a toll-free number to call for 'Microsoft Certified' tech support. They wanted remote access to my PC.",
+    "description": "A loud pop-up appeared on a website, claiming my computer was infected with multiple viruses. It provided a toll-free number to call for 'Microsoft Certified' tech support. They wanted remote access to my PC and tried to sell me a $500 'lifetime security plan'.",
     "country": "USA",
     "type": "Tech Support",
     "imageId": "carousel-5",
     "authorId": "user-1",
-    "createdAt": "2024-07-23T11:45:00Z"
+    "createdAt": "2024-07-24T11:45:00Z"
   },
   {
     "id": "scam-6",
-    "title": "Claim Your Free Government Grant",
-    "description": "Got a Facebook message from someone claiming to work for a government agency. They said I was eligible for a free grant but needed to pay a 'processing fee' via gift cards to receive the funds.",
-    "country": "USA",
+    "title": "Netflix Subscription Problem",
+    "description": "I got an email that looked exactly like it was from Netflix, saying my payment was declined and my subscription is canceled. It had a button to 'Restart Membership'. I clicked it and it took me to a page asking for my full credit card details and billing address. It was a phishing attempt to steal my financial info.",
+    "country": "Germany",
     "type": "Phishing",
     "imageId": "carousel-2",
     "authorId": "user-2",
-    "createdAt": "2024-07-24T08:00:00Z"
+    "createdAt": "2024-07-23T08:00:00Z"
+  },
+  {
+    "id": "scam-7",
+    "title": "Romance Scam on Dating App",
+    "description": "I was talking to someone on a dating app for weeks. They claimed to be working overseas and we developed a strong connection. Suddenly, they had a medical emergency and asked me for thousands of dollars to cover hospital bills, promising to pay me back as soon as they returned. It was all a lie.",
+    "country": "USA",
+    "type": "Investment",
+    "imageId": "carousel-4",
+    "authorId": "user-3",
+    "createdAt": "2024-07-22T19:20:00Z"
+  },
+  {
+    "id": "scam-8",
+    "title": "Fake 'Grandchild in Trouble' Call",
+    "description": "Received a frantic call from someone pretending to be my grandson. He said he was arrested and needed bail money sent via a wire transfer immediately, and begged me not to tell his parents. I almost fell for it, but called my daughter first. My real grandson was safe at home.",
+    "country": "Canada",
+    "type": "Phishing",
+    "imageId": "carousel-1",
+    "authorId": "user-4",
+    "createdAt": "2024-07-21T15:00:00Z"
+  },
+  {
+    "id": "scam-9",
+    "title": "Amazon 'Brush' Scam",
+    "description": "I've been receiving small, unordered packages from Amazon containing cheap items like phone cases and plastic toys. I learned this is a 'brushing' scam, where sellers create fake accounts in my name, send items, and then post fake positive reviews to boost their ratings. It's unsettling that they have my address.",
+    "country": "UK",
+    "type": "Delivery",
+    "imageId": "carousel-1",
+    "authorId": "user-1",
+    "createdAt": "2024-07-20T12:00:00Z"
   }
 ]
