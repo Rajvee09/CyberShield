@@ -1,9 +1,16 @@
-import { getAllScams } from '@/lib/data';
+import { getAllScams, getUserById } from '@/lib/data';
 import ScamCard from '@/components/scams/scam-card';
 import { Shield } from 'lucide-react';
 
 export default async function CommunityPage() {
   const allScams = await getAllScams();
+
+  const scamsWithUsers = await Promise.all(
+    allScams.map(async scam => {
+      const user = await getUserById(scam.authorId);
+      return { scam, user };
+    })
+  );
 
   return (
     <div className="bg-background">
@@ -20,8 +27,8 @@ export default async function CommunityPage() {
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {allScams.map(scam => (
-            <ScamCard key={scam.id} scam={scam} />
+          {scamsWithUsers.map(({ scam, user }) => (
+            <ScamCard key={scam.id} scam={scam} user={user} />
           ))}
         </div>
       </section>

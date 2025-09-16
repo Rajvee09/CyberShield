@@ -5,15 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import type { Scam, User } from '@/lib/definitions';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getUserById } from '@/lib/data';
 
 interface ScamCardProps {
   scam: Scam;
+  user: User | undefined;
 }
 
-export default async function ScamCard({ scam }: ScamCardProps) {
+export default function ScamCard({ scam, user }: ScamCardProps) {
   const image = PlaceHolderImages.find(p => p.id === scam.imageId);
-  const user = await getUserById(scam.authorId);
 
   return (
     <Link href={`/community/${scam.id}`}>

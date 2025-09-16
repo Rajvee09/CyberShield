@@ -5,14 +5,21 @@ import { ArrowRight, CheckCircle, Shield, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import TrendingScamsCarousel from '@/components/scams/trending-scams-carousel';
-import { getRecentScams, getTrendingScams } from '@/lib/data';
+import { getRecentScams, getTrendingScams, getUserById } from '@/lib/data';
 import ScamCard from '@/components/scams/scam-card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default async function Home() {
-  const trendingScams = await getTrendingScams('all', 5);
+  const trendingScams = await getTrendingScams({ limit: 5 });
   const recentScams = await getRecentScams(4);
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero-image');
+
+  const recentScamsWithUsers = await Promise.all(
+    recentScams.map(async scam => {
+      const user = await getUserById(scam.authorId);
+      return { scam, user };
+    })
+  );
 
   return (
     <div className="flex flex-col">
@@ -89,8 +96,8 @@ export default async function Home() {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {recentScams.map(scam => (
-              <ScamCard key={scam.id} scam={scam} />
+            {recentScamsWithUsers.map(({ scam, user }) => (
+              <ScamCard key={scam.id} scam={scam} user={user} />
             ))}
           </div>
         </div>

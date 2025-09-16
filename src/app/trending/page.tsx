@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getTrendingScams } from '@/lib/data';
+import { getTrendingScams, getUserById } from '@/lib/data';
 import ScamCard from '@/components/scams/scam-card';
 import { TrendingUp, Filter } from 'lucide-react';
 import {
@@ -19,8 +19,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import type { Scam } from '@/lib/definitions';
+import type { Scam, User } from '@/lib/definitions';
 import { Skeleton } from '@/components/ui/skeleton';
+
+type ScamWithUser = {
+  scam: Scam;
+  user: User | undefined;
+};
 
 const scamTypes = [
   'Phishing',
@@ -32,8 +37,8 @@ const scamTypes = [
 const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'Nigeria'];
 
 export default function TrendingPage() {
-  const [scams, setScams] = useState<Scam[]>([]);
-  const [filteredScams, setFilteredScams] = useState<Scam[]>([]);
+  const [scams, setScams] = useState<ScamWithUser[]>([]);
+  const [filteredScams, setFilteredScams] = useState<ScamWithUser[]>([]);
   const [country, setCountry] = useState('all');
   const [type, setType] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
@@ -42,8 +47,14 @@ export default function TrendingPage() {
     async function loadScams() {
       setIsLoading(true);
       const allScams = await getTrendingScams();
-      setScams(allScams);
-      setFilteredScams(allScams);
+      const scamsWithUsers = await Promise.all(
+        allScams.map(async scam => {
+          const user = await getUserById(scam.authorId);
+          return { scam, user };
+        })
+      );
+      setScams(scamsWithUsers);
+      setFilteredScams(scamsWithUsers);
       setIsLoading(false);
     }
     loadScams();
@@ -53,12 +64,12 @@ export default function TrendingPage() {
     let result = scams;
     if (country !== 'all') {
       result = result.filter(
-        scam => scam.country.toLowerCase() === country.toLowerCase()
+        item => item.scam.country.toLowerCase() === country.toLowerCase()
       );
     }
     if (type !== 'all') {
       result = result.filter(
-        scam => scam.type.toLowerCase() === type.toLowerCase()
+        item => item.scam.type.toLowerCase() === type.toLowerCase()
       );
     }
     setFilteredScams(result);
@@ -129,8 +140,8 @@ export default function TrendingPage() {
           </div>
         ) : (
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredScams.map(scam => (
-              <ScamCard key={scam.id} scam={scam} />
+            {filteredScams.map(({ scam, user }) => (
+              <ScamCard key={scam.id} scam={scam} user={user} />
             ))}
           </div>
         )}
