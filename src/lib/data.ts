@@ -7,7 +7,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function getTrendingScams(
   country: string = 'all',
-  limit: number = 5
+  limit?: number
 ): Promise<Scam[]> {
   await delay(100);
   const allScams = scams as Scam[];
@@ -17,9 +17,16 @@ export async function getTrendingScams(
       : allScams.filter(
           scam => scam.country.toLowerCase() === country.toLowerCase()
         );
-  
+
   // For "trending", we'll just take the most recent ones for now.
-  return filteredScams.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, limit);
+  const sortedScams = filteredScams.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  if (limit) {
+    return sortedScams.slice(0, limit);
+  }
+  return sortedScams;
 }
 
 export async function getRecentScams(limit: number = 8): Promise<Scam[]> {

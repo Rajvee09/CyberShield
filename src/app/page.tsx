@@ -10,7 +10,7 @@ import ScamCard from '@/components/scams/scam-card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default async function Home() {
-  const trendingScams = await getTrendingScams('all');
+  const trendingScams = await getTrendingScams('all', 5);
   const recentScams = await getRecentScams(4);
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero-image');
 
