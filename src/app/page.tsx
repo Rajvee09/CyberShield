@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Shield } from 'lucide-react';
+import { ArrowRight, CheckCircle, Shield, TrendingUp } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -80,11 +80,18 @@ export default async function Home() {
                 Fresh reports submitted by vigilant users like you.
               </p>
             </div>
-            <Button asChild variant="outline">
-              <Link href="/community">
-                View All Reports <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Button asChild variant="outline">
+                <Link href="/#trending">
+                  <TrendingUp className="mr-2 h-4 w-4" /> Trending Scams
+                </Link>
+              </Button>
+              <Button asChild>
+                <Link href="/community">
+                  View All Reports <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {recentScams.map(scam => (
