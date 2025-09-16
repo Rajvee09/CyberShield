@@ -5,21 +5,32 @@ import users from '@/data/users.json';
 // Simulate a database delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function getTrendingScams(
-  country: string = 'all',
-  limit?: number
-): Promise<Scam[]> {
+export async function getTrendingScams({
+  country = 'all',
+  type = 'all',
+  limit,
+}: {
+  country?: string;
+  type?: string;
+  limit?: number;
+} = {}): Promise<Scam[]> {
   await delay(100);
-  const allScams = scams as Scam[];
-  const filteredScams =
-    country.toLowerCase() === 'all'
-      ? allScams
-      : allScams.filter(
-          scam => scam.country.toLowerCase() === country.toLowerCase()
-        );
+  let allScams = scams as Scam[];
+
+  if (country.toLowerCase() !== 'all') {
+    allScams = allScams.filter(
+      scam => scam.country.toLowerCase() === country.toLowerCase()
+    );
+  }
+
+  if (type.toLowerCase() !== 'all') {
+    allScams = allScams.filter(
+      scam => scam.type.toLowerCase() === type.toLowerCase()
+    );
+  }
 
   // For "trending", we'll just take the most recent ones for now.
-  const sortedScams = filteredScams.sort(
+  const sortedScams = allScams.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -28,6 +39,7 @@ export async function getTrendingScams(
   }
   return sortedScams;
 }
+
 
 export async function getRecentScams(limit: number = 8): Promise<Scam[]> {
   await delay(100);

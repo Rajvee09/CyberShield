@@ -4,6 +4,7 @@ export type Scam = {
   description: string;
   country: string;
   type: 'Phishing' | 'Fake Job' | 'Investment' | 'Tech Support' | 'Delivery';
+  platform: 'Email' | 'Website' | 'Social Media' | 'Phone Call' | 'Text Message';
   imageId: string;
   authorId: string;
   createdAt: string;

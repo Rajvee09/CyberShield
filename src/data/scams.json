@@ -6,6 +6,7 @@
     "description": "Received a text message claiming a package from a well-known delivery service is on hold. It asks me to click a link to reschedule delivery and pay a small 'redelivery fee.' The website it linked to looked very convincing, but the URL was slightly misspelled. I almost entered my credit card details.",
     "country": "USA",
     "type": "Delivery",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-1",
     "createdAt": "2024-07-28T10:00:00Z"
@@ -16,6 +17,7 @@
     "description": "An email pretending to be from my bank stated that there has been suspicious activity on my account. It urged me to log in via a provided link to verify my identity immediately or my account would be frozen. The sender's email address was slightly off, using '.co' instead of '.com'.",
     "country": "UK",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-2",
     "createdAt": "2024-07-27T14:30:00Z"
@@ -26,6 +28,7 @@
     "description": "A LinkedIn message offered a high-paying remote data entry job. The 'recruiter' conducted a quick chat interview and then asked for my personal information and a fee for 'training materials' and a background check before any formal contract was signed. They insisted on payment via a peer-to-peer payment app.",
     "country": "Canada",
     "type": "Fake Job",
+    "platform": "Social Media",
     "imageId": "carousel-3",
     "authorId": "user-3",
     "createdAt": "2024-07-26T09:00:00Z"
@@ -36,6 +39,7 @@
     "description": "An ad on social media promoted a new cryptocurrency with guaranteed 50% weekly returns. The platform required a minimum investment and showed fake profit gains, but withdrawals are impossible. They kept asking for more money to 'unlock' my funds, citing fake taxes and fees.",
     "country": "Australia",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-4",
     "createdAt": "2024-07-25T18:00:00Z"
@@ -46,6 +50,7 @@
     "description": "A loud pop-up appeared on a website, claiming my computer was infected with multiple viruses. It provided a toll-free number to call for 'Microsoft Certified' tech support. They wanted remote access to my PC and tried to sell me a $500 'lifetime security plan'.",
     "country": "USA",
     "type": "Tech Support",
+    "platform": "Website",
     "imageId": "carousel-5",
     "authorId": "user-1",
     "createdAt": "2024-07-24T11:45:00Z"
@@ -56,6 +61,7 @@
     "description": "I got an email that looked exactly like it was from Netflix, saying my payment was declined and my subscription is canceled. It had a button to 'Restart Membership'. I clicked it and it took me to a page asking for my full credit card details and billing address. It was a phishing attempt to steal my financial info.",
     "country": "Germany",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-2",
     "createdAt": "2024-07-23T08:00:00Z"
@@ -66,6 +72,7 @@
     "description": "I was talking to someone on a dating app for weeks. They claimed to be working overseas and we developed a strong connection. Suddenly, they had a medical emergency and asked me for thousands of dollars to cover hospital bills, promising to pay me back as soon as they returned. It was all a lie.",
     "country": "USA",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-3",
     "createdAt": "2024-07-22T19:20:00Z"
@@ -76,6 +83,7 @@
     "description": "Received a frantic call from someone pretending to be my grandson. He said he was arrested and needed bail money sent via a wire transfer immediately, and begged me not to tell his parents. I almost fell for it, but called my daughter first. My real grandson was safe at home.",
     "country": "Canada",
     "type": "Phishing",
+    "platform": "Phone Call",
     "imageId": "carousel-1",
     "authorId": "user-4",
     "createdAt": "2024-07-21T15:00:00Z"
@@ -86,6 +94,7 @@
     "description": "I've been receiving small, unordered packages from Amazon containing cheap items like phone cases and plastic toys. I learned this is a 'brushing' scam, where sellers create fake accounts in my name, send items, and then post fake positive reviews to boost their ratings. It's unsettling that they have my address.",
     "country": "UK",
     "type": "Delivery",
+    "platform": "Website",
     "imageId": "carousel-1",
     "authorId": "user-1",
     "createdAt": "2024-07-20T12:00:00Z"
@@ -96,6 +105,7 @@
     "description": "An automated robocall claimed my Social Security Number has been suspended due to criminal activity. To reactivate it, I was instructed to press 1 and speak to an 'agent.' They then asked for my SSN to 'verify' my identity. This is a classic tactic to steal your identity.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Phone Call",
     "imageId": "carousel-2",
     "authorId": "user-2",
     "createdAt": "2024-07-19T11:00:00Z"
@@ -106,6 +116,7 @@
     "description": "An email announced I had won a free luxury cruise. All I had to do was pay a 'port tax' and 'booking fee' with my credit card. After paying, the company disappeared, and no cruise tickets ever arrived. The fees were a few hundred dollars.",
     "country": "USA",
     "type": "Investment",
+    "platform": "Email",
     "imageId": "carousel-4",
     "authorId": "user-3",
     "createdAt": "2024-07-18T16:20:00Z"
@@ -116,6 +127,7 @@
     "description": "Got an email that looked like it was from McAfee or Norton, claiming my antivirus subscription had expired and my computer was at risk. The link led to a very convincing payment page, but it was designed to steal credit card info. The annual fee was only slightly higher than normal.",
     "country": "Australia",
     "type": "Tech Support",
+    "platform": "Email",
     "imageId": "carousel-5",
     "authorId": "user-4",
     "createdAt": "2024-07-17T09:30:00Z"
@@ -126,6 +138,7 @@
     "description": "I was selling furniture online. A buyer sent a check for way more than the asking price, claiming it was a mistake by their 'assistant.' They asked me to deposit the check and wire them back the difference. The check was fake, and I would have lost the 'refunded' money.",
     "country": "UK",
     "type": "Phishing",
+    "platform": "Website",
     "imageId": "carousel-2",
     "authorId": "user-1",
     "createdAt": "2024-07-16T20:00:00Z"
@@ -136,6 +149,7 @@
     "description": "A pop-up froze my browser with a warning about a 'Zeus Virus'. I called the number, and the 'technician' took remote control of my computer. He showed me normal system files and claimed they were viruses. He tried to charge me $800 for a cleanup and a useless software license.",
     "country": "Canada",
     "type": "Tech Support",
+    "platform": "Website",
     "imageId": "carousel-5",
     "authorId": "user-2",
     "createdAt": "2024-07-15T13:10:00Z"
@@ -146,6 +160,7 @@
     "description": "Applied for a remote data entry job that promised $35/hour. The 'hiring manager' contacted me via a messaging app, conducted a brief text-based interview, and 'hired' me. They then sent a fake check to 'buy office equipment' from their 'preferred vendor.' The check bounces after you've sent money to the vendor.",
     "country": "USA",
     "type": "Fake Job",
+    "platform": "Website",
     "imageId": "carousel-3",
     "authorId": "user-3",
     "createdAt": "2024-07-14T10:00:00Z"
@@ -156,6 +171,7 @@
     "description": "Received a call from someone claiming to be from the local power company. They said my bill was overdue and my electricity would be shut off in 30 minutes unless I made an immediate payment using a prepaid debit card or Zelle. It was high-pressure and completely false.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Phone Call",
     "imageId": "carousel-1",
     "authorId": "user-4",
     "createdAt": "2024-07-13T17:45:00Z"
@@ -166,6 +182,7 @@
     "description": "Got a text message with a tracking number, claiming an international package was held at customs. It said I needed to pay a small customs fee online to release it. I wasn't expecting a package, and the link was to a non-governmental site asking for my card details.",
     "country": "Germany",
     "type": "Delivery",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-1",
     "createdAt": "2024-07-12T11:20:00Z"
@@ -176,6 +193,7 @@
     "description": "A lawyer from another country emailed me, claiming a distant, wealthy relative had passed away and left me millions. To claim the inheritance, I just needed to pay some legal and administrative fees upfront. It's an advance-fee fraud scheme.",
     "country": "Nigeria",
     "type": "Investment",
+    "platform": "Email",
     "imageId": "carousel-4",
     "authorId": "user-2",
     "createdAt": "2024-07-11T08:50:00Z"
@@ -186,6 +204,7 @@
     "description": "An email with Best Buy and Geek Squad logos claimed I was being charged $399 for an automatic renewal of a protection plan. It provided a number to call if I wanted to cancel. The person on the phone then tries to get you to install remote access software to 'process the refund.'",
     "country": "USA",
     "type": "Tech Support",
+    "platform": "Email",
     "imageId": "carousel-5",
     "authorId": "user-3",
     "createdAt": "2024-07-10T14:00:00Z"
@@ -196,6 +215,7 @@
     "description": "I responded to an ad to be a mystery shopper. They sent me a large fake check and instructed me to deposit it, keep a portion as my pay, and use the rest to 'evaluate' a store by buying gift cards and sending them the card numbers and PINs. The check bounces, and the money is gone.",
     "country": "Canada",
     "type": "Fake Job",
+    "platform": "Website",
     "imageId": "carousel-3",
     "authorId": "user-4",
     "createdAt": "2024-07-09T12:00:00Z"
@@ -206,6 +226,7 @@
     "description": "Found a great apartment on Craigslist with rent well below market rate. The 'landlord' claimed to be out of the country and couldn't show the property, but would mail the keys after I wired the deposit and first month's rent. They stole the photos from a legitimate real estate listing.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Website",
     "imageId": "carousel-2",
     "authorId": "user-1",
     "createdAt": "2024-07-08T19:00:00Z"
@@ -216,6 +237,7 @@
     "description": "Saw a deepfake video of a famous entrepreneur endorsing a new automated trading platform that promised impossible returns. The link led to a slick-looking site that, once you deposit money, makes it impossible to withdraw while constantly pressuring you to 'invest more.'",
     "country": "UK",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-2",
     "createdAt": "2024-07-07T22:15:00Z"
@@ -226,6 +248,7 @@
     "description": "A company called claiming they could help me get my student loans forgiven under a new government program. They asked for an upfront fee to process the paperwork. This is a scam; you should never pay for help with federal student aid.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Phone Call",
     "imageId": "carousel-2",
     "authorId": "user-3",
     "createdAt": "2024-07-06T10:40:00Z"
@@ -236,6 +259,7 @@
     "description": "Received a text message claiming to be from the state toll authority (e.g., E-ZPass) saying I had an unpaid toll. It threatened a late fee if I didn't pay the $2.50 immediately via the link. The link is a phishing site to steal credit card numbers.",
     "country": "USA",
     "type": "Delivery",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-4",
     "createdAt": "2024-07-05T15:00:00Z"
@@ -246,6 +270,7 @@
     "description": "Phishing email from 'service@paypal-support.com' stated my account has been limited due to a policy violation. It required me to click a link and log in to 'restore access.' The website was a clone of PayPal, designed to steal my login credentials.",
     "country": "Australia",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-1",
     "createdAt": "2024-07-04T18:05:00Z"
@@ -256,6 +281,7 @@
     "description": "Saw an ad offering to pay me $400/week to wrap my car with a Monster Energy drink logo. They sent a fake check, told me to deduct my first week's pay, and wire the rest to the 'installer' who would wrap my car. The check was fake, and I would've been out thousands.",
     "country": "USA",
     "type": "Fake Job",
+    "platform": "Website",
     "imageId": "carousel-3",
     "authorId": "user-2",
     "createdAt": "2024-07-03T11:55:00Z"
@@ -266,6 +292,7 @@
     "description": "An influencer on Instagram flashing a lavish lifestyle offered to be my trading mentor. They convinced me to sign up on a specific 'broker' website and deposit funds. The trading platform showed huge profits, but they were fake. When I tried to withdraw, they demanded a huge 'tax' payment.",
     "country": "UK",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-3",
     "createdAt": "2024-07-02T21:30:00Z"
@@ -276,6 +303,7 @@
     "description": "A text message claiming to be from Apple said my Apple ID was locked due to suspicious activity. It included a link to an 'iforgot.apple-id-security.com' lookalike site to unlock it. This is a phishing attempt to get Apple ID passwords and two-factor authentication codes.",
     "country": "Canada",
     "type": "Tech Support",
+    "platform": "Text Message",
     "imageId": "carousel-5",
     "authorId": "user-4",
     "createdAt": "2024-07-01T16:00:00Z"
@@ -286,6 +314,7 @@
     "description": "After a recent natural disaster, I got an email asking for donations to help victims. The charity name was very similar to a real one, but the website it linked to was different. These scams prey on people's generosity during a crisis.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-1",
     "createdAt": "2024-06-30T10:00:00Z"
@@ -296,6 +325,7 @@
     "description": "A text from a random number said 'The USPS package has arrived at the warehouse but cannot be delivered due to incomplete address information.' It had a link to a fake USPS site to 'update' my address, which then asked for a 'redelivery fee' and my card details.",
     "country": "USA",
     "type": "Delivery",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-2",
     "createdAt": "2024-06-29T14:10:00Z"
@@ -306,6 +336,7 @@
     "description": "I work in accounts payable and received an email from what looked like one of our regular suppliers. They said they had new bank details and attached an updated invoice. It was a Business Email Compromise (BEC) scam; the invoice was fake and the bank account belonged to the scammer. I almost sent $10,000.",
     "country": "UK",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-3",
     "createdAt": "2024-06-28T09:25:00Z"
@@ -316,6 +347,7 @@
     "description": "A stranger contacted me on WhatsApp, pretending they had the wrong number. We started chatting and became friends over several weeks. They started talking about how much money they were making in crypto and convinced me to invest on a platform they recommended. After I invested a large sum, they and my money vanished. They 'fattened me up' before the 'slaughter.'",
     "country": "USA",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-4",
     "createdAt": "2024-06-27T19:00:00Z"
@@ -326,6 +358,7 @@
     "description": "I found a job posting for a personal assistant to a university professor who was supposedly on sabbatical. The interview was via email. They sent a fake check to deposit and told me to buy gift cards for 'research purposes' and send them the codes. It's a classic fake check scam targeting students.",
     "country": "Canada",
     "type": "Fake Job",
+    "platform": "Email",
     "imageId": "carousel-3",
     "authorId": "user-1",
     "createdAt": "2024-06-26T13:40:00Z"
@@ -336,6 +369,7 @@
     "description": "An email from 'MS-Security' with Microsoft logos claimed that my Windows license had expired and my PC was at risk. It directed me to call a number immediately to renew. The goal is to get remote access to your computer and charge you for fake services.",
     "country": "Australia",
     "type": "Tech Support",
+    "platform": "Email",
     "imageId": "carousel-5",
     "authorId": "user-2",
     "createdAt": "2024-06-25T11:00:00Z"
@@ -346,6 +380,7 @@
     "description": "I got a text message saying 'Your driver's license is pending renewal' and that I needed to update my details online. The link was to 'dmv-online-services.com' or something similar. It's a phishing site to collect personal data like your address, DOB, and license number.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-3",
     "createdAt": "2024-06-24T16:50:00Z"
@@ -356,6 +391,7 @@
     "description": "A threatening phone call from someone claiming to be a police officer said I had missed jury duty and a warrant was out for my arrest. To avoid jail, I had to pay a fine immediately using a Bitcoin ATM or by buying gift cards. Real courts don't operate this way.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Phone Call",
     "imageId": "carousel-2",
     "authorId": "user-4",
     "createdAt": "2024-06-23T10:15:00Z"
@@ -366,6 +402,7 @@
     "description": "Received a text: 'DHL: Your package is waiting for delivery. Please confirm payment of 1.99 (USD) via the link.' I was expecting a package, so I almost clicked. The link leads to a phishing site to steal your full credit card information.",
     "country": "Germany",
     "type": "Delivery",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-1",
     "createdAt": "2024-06-22T12:30:00Z"
@@ -376,6 +413,7 @@
     "description": "On a popular YouTube video, a comment pretending to be from the creator said I won a prize. It asked me to contact them on Telegram or WhatsApp. They then try to get your personal info or ask you to pay a 'shipping fee' for the non-existent prize.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-2",
     "createdAt": "2024-06-21T20:00:00Z"
@@ -386,6 +424,7 @@
     "description": "A cold call from someone claiming to be from my Internet Service Provider (like Comcast or BT). They said they've detected that my router has been hacked and is sending malicious traffic. They guided me to a website to download a 'fix,' which was actually malware.",
     "country": "UK",
     "type": "Tech Support",
+    "platform": "Phone Call",
     "imageId": "carousel-5",
     "authorId": "user-3",
     "createdAt": "2024-06-20T14:45:00Z"
@@ -396,6 +435,7 @@
     "description": "I applied to be a pet sitter. The 'client' was moving to my city and wanted to hire me. They sent a fake check with extra money to 'buy pet food' and pay a 'relocation agent'. They asked me to wire the extra money. It's a fake check scam.",
     "country": "USA",
     "type": "Fake Job",
+    "platform": "Website",
     "imageId": "carousel-3",
     "authorId": "user-4",
     "createdAt": "2024-06-19T09:00:00Z"
@@ -406,6 +446,7 @@
     "description": "A Facebook message said I was selected to receive a federal grant for thousands of dollars. To get the money, I had to first pay a 'processing fee' of $250 with a gift card. Government agencies do not communicate through social media and never charge a fee for a grant.",
     "country": "USA",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-1",
     "createdAt": "2024-06-18T13:00:00Z"
@@ -416,6 +457,7 @@
     "description": "I received an email from a friend's hacked account. The email claimed my friend was stranded in another country, had been robbed, and needed me to wire money for a flight home. I called my friend, who was safe at home and had no idea their email was compromised.",
     "country": "Canada",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-2",
     "createdAt": "2024-06-17T23:00:00Z"
@@ -426,6 +468,7 @@
     "description": "Email from 'prime-updates@amazon-billing.co.uk' said there's an issue with my Prime Video subscription. It stated my service would be cut if I didn't update my billing details via their link. It was a phishing site designed to steal Amazon logins and credit card info.",
     "country": "UK",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-3",
     "createdAt": "2024-06-16T17:20:00Z"
@@ -436,6 +479,7 @@
     "description": "A text message claimed I was overcharged on my utility bill and was eligible for a refund. I just had to click a link and enter my banking details for the direct deposit. It was a scam to drain my bank account.",
     "country": "Australia",
     "type": "Phishing",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-4",
     "createdAt": "2024-06-15T11:35:00Z"
@@ -446,6 +490,7 @@
     "description": "Found a beautiful vacation home on a Facebook group for a very low price. The 'owner' asked for a 50% deposit via bank transfer to secure the booking. After I sent the money, they deleted their profile and disappeared. The property was a real listing they had copied.",
     "country": "USA",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-1",
     "createdAt": "2024-06-14T18:40:00Z"
@@ -456,6 +501,7 @@
     "description": "Saw a posting for a paid clinical trial. After applying, they 'accepted' me and sent a fake check to cover 'travel and expenses.' They then asked me to wire a portion of it back to them for 'insurance.' It's a fake check scam dressed up as a medical study.",
     "country": "USA",
     "type": "Fake Job",
+    "platform": "Website",
     "imageId": "carousel-3",
     "authorId": "user-2",
     "createdAt": "2024-06-13T09:50:00Z"
@@ -466,6 +512,7 @@
     "description": "An email from 'cpanel-support' said my website hosting account was suspended for a ToS violation. To reactivate, I had to log in and verify my details. It was a targeted phishing attack to get my web hosting credentials and gain control of my website.",
     "country": "Canada",
     "type": "Tech Support",
+    "platform": "Email",
     "imageId": "carousel-5",
     "authorId": "user-3",
     "createdAt": "2024-06-12T15:20:00Z"
@@ -476,6 +523,7 @@
     "description": "Text message from 'RoyalMail' with a link, saying 'Your parcel has a £2.99 unpaid shipping fee. Please pay this now to avoid your parcel being returned to sender.' The link leads to a fake Royal Mail site to harvest financial details.",
     "country": "UK",
     "type": "Delivery",
+    "platform": "Text Message",
     "imageId": "carousel-1",
     "authorId": "user-4",
     "createdAt": "2024-06-11T12:00:00Z"
@@ -486,6 +534,7 @@
     "description": "I received a terrifying email from a scammer who claimed to have hacked my computer and recorded me through my webcam while I was visiting an adult website. They threatened to send the video to all my contacts unless I paid a ransom in Bitcoin. They often include an old, leaked password of yours to seem more credible.",
     "country": "USA",
     "type": "Phishing",
+    "platform": "Email",
     "imageId": "carousel-2",
     "authorId": "user-1",
     "createdAt": "2024-06-10T23:50:00Z"
@@ -496,10 +545,9 @@
     "description": "Joined a Discord server for a new NFT project. The 'moderators' announced a surprise 'whitelist' opportunity. The link led to a site that looked like the real minting site, but it had a function to drain all the cryptocurrency from my wallet when I tried to connect it. ",
     "country": "USA",
     "type": "Investment",
+    "platform": "Social Media",
     "imageId": "carousel-4",
     "authorId": "user-2",
     "createdAt": "2024-06-09T19:30:00Z"
   }
 ]
-
-    
