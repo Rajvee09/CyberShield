@@ -220,14 +220,13 @@ export default function TrendingPage() {
 
 function CardSkeleton() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 rounded-lg border p-4">
       <Skeleton className="h-40 w-full" />
-      <div className="space-y-2 p-4">
+      <div className="space-y-2">
         <Skeleton className="h-4 w-3/4" />
         <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-full" />
       </div>
-      <div className="flex items-center justify-between p-4 pt-0">
+      <div className="flex items-center justify-between pt-2">
         <Skeleton className="h-6 w-16" />
         <Skeleton className="h-6 w-12" />
       </div>
