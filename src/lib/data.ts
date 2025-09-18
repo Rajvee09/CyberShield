@@ -1,6 +1,8 @@
-import { Scam, User } from './definitions';
+
+import { Scam, User, Comment } from './definitions';
 import scams from '@/data/scams.json';
 import users from '@/data/users.json';
+import comments from '@/data/comments.json';
 
 // Simulate a database delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -48,28 +50,63 @@ export async function getTrendingScams({
   return sortedScams;
 }
 
-
 export async function getRecentScams(limit: number = 8): Promise<Scam[]> {
   await delay(100);
   const allScams = scams as Scam[];
-  return allScams.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, limit);
+  return allScams
+    .sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, limit);
 }
 
-
 export async function getAllScams(): Promise<Scam[]> {
-    await delay(200);
-    const allScams = scams as Scam[];
-    return allScams.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  await delay(200);
+  const allScams = scams as Scam[];
+  return allScams.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 }
 
 export async function getScamById(id: string): Promise<Scam | undefined> {
-    await delay(50);
-    const allScams = scams as Scam[];
-    return allScams.find(scam => scam.id === id);
+  await delay(50);
+  const allScams = scams as Scam[];
+  return allScams.find(scam => scam.id === id);
 }
 
 export async function getUserById(id: string): Promise<User | undefined> {
-    await delay(10);
-    const allUsers = users as User[];
-    return allUsers.find(user => user.id === id);
+  await delay(10);
+  const allUsers = users as User[];
+  return allUsers.find(user => user.id === id);
+}
+
+export async function getCommentsByScamId(
+  scamId: string
+): Promise<Comment[]> {
+  await delay(100);
+  const allComments = comments as Comment[];
+  return allComments
+    .filter(comment => comment.scamId === scamId)
+    .sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+}
+
+export async function addComment(
+  scamId: string,
+  authorId: string,
+  content: string
+): Promise<Comment> {
+  await delay(300);
+  const newComment: Comment = {
+    id: `comment-${Date.now()}`,
+    scamId,
+    authorId,
+    content,
+    createdAt: new Date().toISOString(),
+  };
+  // In a real app, you'd save this to your database.
+  // For now, we just log it and return it.
+  console.log('New comment added:', newComment);
+  return newComment;
 }

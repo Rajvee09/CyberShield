@@ -1,9 +1,10 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { format } from 'date-fns';
-import { Calendar, Globe } from 'lucide-react';
+import { format, formatDistanceToNow } from 'date-fns';
+import { Calendar, Globe, MessageSquare, Send, User as UserIcon } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -13,8 +14,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import type { Scam, User } from '@/lib/definitions';
+import type { Scam, User, Comment } from '@/lib/definitions';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { getCommentsByScamId, getUserById, addComment } from '@/lib/data';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ScamDetailModalProps {
   scam: Scam;
@@ -23,6 +28,11 @@ interface ScamDetailModalProps {
   onOpenChange: (isOpen: boolean) => void;
 }
 
+type CommentWithUser = {
+  comment: Comment;
+  user: User | undefined;
+};
+
 export default function ScamDetailModal({
   scam,
   user,
@@ -30,6 +40,71 @@ export default function ScamDetailModal({
   onOpenChange,
 }: ScamDetailModalProps) {
   const image = PlaceHolderImages.find(p => p.id === scam.imageId);
+  const [comments, setComments] = useState<CommentWithUser[]>([]);
+  const [newComment, setNewComment] = useState('');
+  const [isPosting, setIsPosting] = useState(false);
+  const [isLoadingComments, setIsLoadingComments] = useState(true);
+
+  // For optimistic updates, we assume the current user is Alex Johnson
+  // In a real app, you would get this from an auth context
+  const currentUser: User = {
+    id: 'user-1',
+    name: 'Alex Johnson',
+    avatarUrl: 'https://i.pravatar.cc/150?u=user-1',
+  };
+
+  useEffect(() => {
+    async function loadComments() {
+      if (isOpen) {
+        setIsLoadingComments(true);
+        const commentsData = await getCommentsByScamId(scam.id);
+        const commentsWithUsers = await Promise.all(
+          commentsData.map(async comment => {
+            const user = await getUserById(comment.authorId);
+            return { comment, user };
+          })
+        );
+        setComments(commentsWithUsers);
+        setIsLoadingComments(false);
+      }
+    }
+    loadComments();
+  }, [isOpen, scam.id]);
+
+  const handlePostComment = async () => {
+    if (!newComment.trim()) return;
+
+    setIsPosting(true);
+
+    const tempCommentId = `temp-${Date.now()}`;
+    const optimisticComment: CommentWithUser = {
+      comment: {
+        id: tempCommentId,
+        scamId: scam.id,
+        authorId: currentUser.id,
+        content: newComment,
+        createdAt: new Date().toISOString(),
+      },
+      user: currentUser,
+    };
+
+    setComments(prev => [...prev, optimisticComment]);
+    setNewComment('');
+
+    try {
+      const savedComment = await addComment(scam.id, currentUser.id, newComment.trim());
+      // Replace temporary comment with real one from server
+      setComments(prev =>
+        prev.map(c => (c.comment.id === tempCommentId ? { comment: savedComment, user: currentUser } : c))
+      );
+    } catch (error) {
+      console.error('Failed to post comment:', error);
+      // Revert optimistic update on failure
+      setComments(prev => prev.filter(c => c.comment.id !== tempCommentId));
+    } finally {
+      setIsPosting(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -67,7 +142,7 @@ export default function ScamDetailModal({
                   <AvatarImage src={user.avatarUrl} alt={user.name} />
                   <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <span>{user.name}</span>
+                <span>Reported by {user.name}</span>
               </div>
             )}
             <div className="flex items-center gap-2">
@@ -92,8 +167,79 @@ export default function ScamDetailModal({
               </p>
             </CardContent>
           </Card>
+
+          <Card className="mt-10">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 font-headline text-2xl">
+                <MessageSquare /> Community Discussion
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {isLoadingComments ? (
+                  <>
+                    <CommentSkeleton />
+                    <CommentSkeleton />
+                  </>
+                ) : comments.length > 0 ? (
+                  comments.map(({ comment: c, user: commentUser }) => (
+                    <div key={c.id} className="flex gap-4">
+                      <Avatar>
+                        <AvatarImage src={commentUser?.avatarUrl} alt={commentUser?.name} />
+                        <AvatarFallback>{commentUser?.name.charAt(0) ?? 'U'}</AvatarFallback>
+                      </Avatar>
+                      <div className="w-full">
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold">{commentUser?.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })}
+                          </p>
+                        </div>
+                        <p className="mt-1 text-muted-foreground">{c.content}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="py-4 text-center text-muted-foreground">
+                    No comments yet. Be the first to say something!
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-8 flex gap-4">
+                <Avatar>
+                  <AvatarImage src={currentUser.avatarUrl} alt={currentUser.name} />
+                  <AvatarFallback>{currentUser.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="w-full space-y-2">
+                  <Textarea
+                    placeholder="Add a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    disabled={isPosting}
+                  />
+                  <Button onClick={handlePostComment} disabled={isPosting || !newComment.trim()}>
+                    {isPosting ? 'Posting...' : 'Post Comment'} <Send className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </DialogContent>
     </Dialog>
   );
+}
+
+function CommentSkeleton() {
+  return (
+    <div className="flex gap-4">
+      <Skeleton className="h-10 w-10 rounded-full" />
+      <div className="w-full space-y-2">
+        <Skeleton className="h-4 w-32" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-4/5" />
+      </div>
+    </div>
+  )
 }

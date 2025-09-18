@@ -1,0 +1,45 @@
+
+[
+  {
+    "id": "comment-1",
+    "scamId": "scam-1",
+    "authorId": "user-2",
+    "content": "This exact thing happened to my dad! The link looked so real. Good on you for not falling for it.",
+    "createdAt": "2024-07-28T12:05:00Z"
+  },
+  {
+    "id": "comment-2",
+    "scamId": "scam-1",
+    "authorId": "user-4",
+    "content": "I got one from 'FedEx' last week. Always check the sender's number and the URL carefully. Never click impulsively.",
+    "createdAt": "2024-07-28T14:20:00Z"
+  },
+  {
+    "id": "comment-3",
+    "scamId": "scam-2",
+    "authorId": "user-1",
+    "content": "The '.co' instead of '.com' is a classic trick. Thanks for sharing the specifics.",
+    "createdAt": "2024-07-27T16:00:00Z"
+  },
+  {
+    "id": "comment-4",
+    "scamId": "scam-3",
+    "authorId": "user-3",
+    "content": "Ugh, the LinkedIn job scams are out of control. Any legit company won't ask for money for training materials. Red flag!",
+    "createdAt": "2024-07-26T11:30:00Z"
+  },
+  {
+    "id": "comment-5",
+    "scamId": "scam-51",
+    "authorId": "user-4",
+    "content": "The UPI 'request money' trick is so sneaky. It preys on people not reading the screen properly. Thanks for this reminder.",
+    "createdAt": "2024-07-28T13:00:00Z"
+  },
+  {
+    "id": "comment-6",
+    "scamId": "scam-51",
+    "authorId": "user-3",
+    "content": "Happened to me on OLX. The guy was so convincing. I almost approved the request. Always read what you're approving!",
+    "createdAt": "2024-07-28T15:10:00Z"
+  }
+]
