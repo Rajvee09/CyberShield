@@ -1,16 +1,39 @@
+
+'use client';
+
+import { useEffect, useState } from 'react';
 import { getAllScams, getUserById } from '@/lib/data';
 import ScamCard from '@/components/scams/scam-card';
 import { Shield } from 'lucide-react';
+import type { Scam, User } from '@/lib/definitions';
+import ScamDetailModal from '@/components/scams/scam-detail-modal';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default async function CommunityPage() {
-  const allScams = await getAllScams();
+type ScamWithUser = {
+  scam: Scam;
+  user: User | undefined;
+};
 
-  const scamsWithUsers = await Promise.all(
-    allScams.map(async scam => {
-      const user = await getUserById(scam.authorId);
-      return { scam, user };
-    })
-  );
+export default function CommunityPage() {
+  const [scamsWithUsers, setScamsWithUsers] = useState<ScamWithUser[]>([]);
+  const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadScams() {
+      setIsLoading(true);
+      const allScams = await getAllScams();
+      const loadedScamsWithUsers = await Promise.all(
+        allScams.map(async scam => {
+          const user = await getUserById(scam.authorId);
+          return { scam, user };
+        })
+      );
+      setScamsWithUsers(loadedScamsWithUsers);
+      setIsLoading(false);
+    }
+    loadScams();
+  }, []);
 
   return (
     <div className="bg-background">
@@ -26,12 +49,50 @@ export default async function CommunityPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {scamsWithUsers.map(({ scam, user }) => (
-            <ScamCard key={scam.id} scam={scam} user={user} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[...Array(12)].map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {scamsWithUsers.map(item => (
+              <ScamCard
+                key={item.scam.id}
+                scam={item.scam}
+                user={item.user}
+                onCardClick={() => setSelectedScam(item)}
+              />
+            ))}
+          </div>
+        )}
       </section>
+
+      {selectedScam && (
+        <ScamDetailModal
+          scam={selectedScam.scam}
+          user={selectedScam.user}
+          isOpen={!!selectedScam}
+          onOpenChange={() => setSelectedScam(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+function CardSkeleton() {
+  return (
+    <div className="space-y-4 rounded-lg border p-4">
+      <Skeleton className="h-40 w-full" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-full" />
+      </div>
+      <div className="flex items-center justify-between pt-2">
+        <Skeleton className="h-6 w-16" />
+        <Skeleton className="h-6 w-12" />
+      </div>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -19,14 +20,15 @@ import {
 import { Badge } from '@/components/ui/badge';
 import type { Scam } from '@/lib/definitions';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import Link from 'next/link';
 
 interface TrendingScamsCarouselProps {
   scams: Scam[];
+  onScamClick: (scam: Scam) => void;
 }
 
 export default function TrendingScamsCarousel({
   scams,
+  onScamClick,
 }: TrendingScamsCarouselProps) {
   return (
     <Carousel
@@ -42,7 +44,10 @@ export default function TrendingScamsCarousel({
           return (
             <CarouselItem key={scam.id} className="md:basis-1/2 lg:basis-1/3">
               <div className="p-1">
-                <Card className="h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+                <Card
+                  onClick={() => onScamClick(scam)}
+                  className="h-full cursor-pointer overflow-hidden transition-shadow duration-300 hover:shadow-xl"
+                >
                   <CardHeader className="relative h-48 w-full p-0">
                     {image && (
                       <Image
@@ -59,13 +64,8 @@ export default function TrendingScamsCarousel({
                     </div>
                   </CardHeader>
                   <CardContent className="p-4">
-                    <CardTitle className="font-headline text-xl">
-                      <Link
-                        href={`/community/${scam.id}`}
-                        className="hover:underline"
-                      >
-                        {scam.title}
-                      </Link>
+                    <CardTitle className="font-headline text-xl hover:underline">
+                      {scam.title}
                     </CardTitle>
                     <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
                       {scam.description}

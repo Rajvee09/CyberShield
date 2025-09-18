@@ -1,6 +1,10 @@
+
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Shield, TrendingUp } from 'lucide-react';
+import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,18 +12,39 @@ import TrendingScamsCarousel from '@/components/scams/trending-scams-carousel';
 import { getRecentScams, getTrendingScams, getUserById } from '@/lib/data';
 import ScamCard from '@/components/scams/scam-card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import type { Scam, User } from '@/lib/definitions';
+import ScamDetailModal from '@/components/scams/scam-detail-modal';
 
-export default async function Home() {
-  const trendingScams = await getTrendingScams({ limit: 5 });
-  const recentScams = await getRecentScams(4);
+type ScamWithUser = {
+  scam: Scam;
+  user: User | undefined;
+};
+
+export default function Home() {
+  const [trendingScams, setTrendingScams] = useState<Scam[]>([]);
+  const [recentScamsWithUsers, setRecentScamsWithUsers] = useState<
+    ScamWithUser[]
+  >([]);
+  const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
+
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero-image');
 
-  const recentScamsWithUsers = await Promise.all(
-    recentScams.map(async scam => {
-      const user = await getUserById(scam.authorId);
-      return { scam, user };
-    })
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      const trending = await getTrendingScams({ limit: 5 });
+      setTrendingScams(trending);
+
+      const recent = await getRecentScams(4);
+      const recentWithUsers = await Promise.all(
+        recent.map(async scam => {
+          const user = await getUserById(scam.authorId);
+          return { scam, user };
+        })
+      );
+      setRecentScamsWithUsers(recentWithUsers);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -72,7 +97,15 @@ export default async function Home() {
               See the most reported scams right now, filtered by your region.
             </p>
           </div>
-          <TrendingScamsCarousel scams={trendingScams} />
+          <TrendingScamsCarousel
+            scams={trendingScams}
+            onScamClick={scam => {
+              const user = recentScamsWithUsers.find(
+                item => item.scam.id === scam.id
+              )?.user;
+              setSelectedScam({ scam, user });
+            }}
+          />
         </div>
       </section>
 
@@ -93,11 +126,21 @@ export default async function Home() {
                   View All Reports <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
+              <Button asChild variant="outline">
+                <Link href="/trending">
+                  Trending Scams <TrendingUp className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {recentScamsWithUsers.map(({ scam, user }) => (
-              <ScamCard key={scam.id} scam={scam} user={user} />
+            {recentScamsWithUsers.map(item => (
+              <ScamCard
+                key={item.scam.id}
+                scam={item.scam}
+                user={item.user}
+                onCardClick={() => setSelectedScam(item)}
+              />
             ))}
           </div>
         </div>
@@ -157,6 +200,14 @@ export default async function Home() {
           </div>
         </div>
       </section>
+      {selectedScam && (
+        <ScamDetailModal
+          scam={selectedScam.scam}
+          user={selectedScam.user}
+          isOpen={!!selectedScam}
+          onOpenChange={() => setSelectedScam(null)}
+        />
+      )}
     </div>
   );
 }

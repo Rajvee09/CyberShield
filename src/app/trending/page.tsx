@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -21,6 +22,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { Scam, User } from '@/lib/definitions';
 import { Skeleton } from '@/components/ui/skeleton';
+import ScamDetailModal from '@/components/scams/scam-detail-modal';
 
 type ScamWithUser = {
   scam: Scam;
@@ -59,6 +61,8 @@ export default function TrendingPage() {
   const [type, setType] = useState('all');
   const [platform, setPlatform] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
+
 
   useEffect(() => {
     async function loadScams() {
@@ -175,12 +179,25 @@ export default function TrendingPage() {
           </div>
         ) : (
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredScams.map(({ scam, user }) => (
-              <ScamCard key={scam.id} scam={scam} user={user} />
-            ))}
+            {filteredScams.map(item => (
+                <ScamCard
+                  key={item.scam.id}
+                  scam={item.scam}
+                  user={item.user}
+                  onCardClick={() => setSelectedScam(item)}
+                />
+              ))}
           </div>
         )}
       </section>
+      {selectedScam && (
+        <ScamDetailModal
+          scam={selectedScam.scam}
+          user={selectedScam.user}
+          isOpen={!!selectedScam}
+          onOpenChange={() => setSelectedScam(null)}
+        />
+      )}
     </div>
   );
 }

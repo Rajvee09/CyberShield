@@ -1,31 +1,43 @@
-import { getScamById, getUserById } from '@/lib/data';
-import { notFound } from 'next/navigation';
+
+'use client';
+
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { format } from 'date-fns';
+import { Calendar, Globe } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, Globe, User as UserIcon } from 'lucide-react';
-import { format } from 'date-fns';
+import type { Scam, User } from '@/lib/definitions';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-export default async function ScamDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const scam = await getScamById(params.id);
+interface ScamDetailModalProps {
+  scam: Scam;
+  user: User | undefined;
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+}
 
-  if (!scam) {
-    notFound();
-  }
-
-  const user = await getUserById(scam.authorId);
+export default function ScamDetailModal({
+  scam,
+  user,
+  isOpen,
+  onOpenChange,
+}: ScamDetailModalProps) {
   const image = PlaceHolderImages.find(p => p.id === scam.imageId);
 
   return (
-    <div className="bg-background">
-      <section className="container mx-auto px-4 py-12 md:py-20">
-        <div className="mx-auto max-w-4xl">
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[90dvh] max-w-4xl overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="sr-only">{scam.title}</DialogTitle>
+        </DialogHeader>
+        <div className="py-4">
           {image && (
             <div className="relative mb-8 h-64 w-full overflow-hidden rounded-lg shadow-lg md:h-96">
               <Image
@@ -81,7 +93,7 @@ export default async function ScamDetailPage({
             </CardContent>
           </Card>
         </div>
-      </section>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
