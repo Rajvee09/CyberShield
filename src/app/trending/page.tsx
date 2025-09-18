@@ -52,6 +52,15 @@ const platforms = [
   'Social Media',
   'Phone Call',
   'Text Message',
+  'Instagram',
+  'Facebook',
+  'Flipkart',
+  'Blinkit',
+  'Zepto',
+  'LinkedIn',
+  'Freelancing Website',
+  'Amazon',
+  'Meesho',
 ];
 
 export default function TrendingPage() {
@@ -94,9 +103,16 @@ export default function TrendingPage() {
       );
     }
     if (platform !== 'all') {
-      result = result.filter(
-        item => item.scam.platform.toLowerCase() === platform.toLowerCase()
-      );
+      // This logic will filter based on the main platform category or if the description includes the specific platform name.
+      if (['Email', 'Website', 'Social Media', 'Phone Call', 'Text Message'].includes(platform)) {
+         result = result.filter(
+          item => item.scam.platform.toLowerCase() === platform.toLowerCase()
+        );
+      } else {
+         result = result.filter(
+          item => item.scam.description.toLowerCase().includes(platform.toLowerCase())
+        );
+      }
     }
     setFilteredScams(result);
   }, [country, type, platform, scams]);
