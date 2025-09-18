@@ -20,82 +20,80 @@ const preventionTopics = [
     id: 'common-red-flags',
     title: 'Common Red Flags',
     icon: CircleAlert,
-    content: `
-- **Sense of Urgency:** Scammers pressure you to act immediately, saying the offer is for a "limited time only" or your account will be suspended.
-- **Unsolicited Contact:** Be wary of unexpected emails, texts, or calls, especially those asking for personal information.
-- **Too Good to Be True:** If an offer seems unbelievably good (like winning a lottery you never entered), it's almost certainly a scam.
-- **Spelling and Grammar Mistakes:** Legitimate companies usually have professional communications. Obvious errors are a big red flag.
-- **Vague or Generic Greetings:** Emails starting with "Dear Customer" instead of your name can be a sign of a mass phishing attempt.
-- **Requests for Unusual Payment Methods:** Scammers prefer untraceable payment methods like gift cards, wire transfers, or cryptocurrency.
-    `,
+    content: `A sense of urgency is a major red flag. Scammers pressure you to act immediately, saying an offer is for a "limited time only" or that your account will be suspended.
+Be wary of unsolicited contact. Unexpected emails, texts, or calls are suspicious, especially if they ask for personal information.
+If an offer seems too good to be true, like winning a lottery you never entered, it's almost certainly a scam.
+Legitimate companies usually have professional communications. Obvious spelling and grammar mistakes are a sign of a scam.
+Be cautious of vague or generic greetings. Emails starting with "Dear Customer" instead of your name can be a sign of a mass phishing attempt.
+Scammers prefer untraceable payment methods like gift cards, wire transfers, or cryptocurrency. Requests for these should be considered a red flag.`,
   },
   {
     id: 'phishing',
     title: 'Phishing Scams',
     icon: MailWarning,
     content: `Phishing scams use fraudulent emails, texts, or websites to trick you into revealing personal information.
-\n\n**How to Prevent:**
-\n- **Verify the Sender:** Check the sender's email address. Scammers often use addresses that are slightly different from legitimate ones (e.g., 'service@paypa1.com').
-\n- **Don't Click Suspicious Links:** Hover over links to see the actual URL before clicking. Manually type the website address into your browser instead.
-\n- **Never Share Personal Information:** Banks and legitimate services will never ask for your password, PIN, or full social security number via email.
-    `,
+
+How to Prevent:
+Verify the sender's email address. Scammers often use addresses that are slightly different from legitimate ones (e.g., 'service@paypa1.com').
+Don't click suspicious links. Hover over links to see the actual URL before clicking. It's safer to manually type the website address into your browser.
+Never share sensitive personal information. Banks and legitimate services will never ask for your password, PIN, or full social security number via email.`,
   },
   {
     id: 'tech-support',
     title: 'Tech Support Scams',
     icon: Computer,
     content: `These scams involve a pop-up or phone call claiming your computer is infected. The "technician" will then ask for payment or remote access to your device.
-\n\n**How to Prevent:**
-\n- **Legitimate Companies Don't Initiate Contact:** Microsoft, Apple, and Google will not cold-call you about a virus.
-\n- **Don't Grant Remote Access:** Never give an unknown person control of your computer.
-\n- **Close the Pop-Up:** If you see a scary pop-up, close your browser. If you can't, use Task Manager (Ctrl+Shift+Esc) or Force Quit to close it.
-\n- **Never Pay with Gift Cards:** Scammers often demand payment via gift cards because they are untraceable.
-    `,
+
+How to Prevent:
+Legitimate companies like Microsoft, Apple, and Google will not cold-call you about a virus.
+Never grant an unknown person remote access to your computer.
+If you see a scary pop-up, close your browser. If you can't, use your computer's task manager to force it to close.
+Scammers often demand payment via gift cards because they are untraceable. Legitimate tech support will not do this.`,
   },
   {
     id: 'fake-job',
     title: 'Fake Job Scams',
     icon: Briefcase,
-    content: `Scammers post fake job listings or contact you directly with offers that are too good to be true. They aim to steal your information or money.
-\n\n**How to Prevent:**
-\n- **Research the Company:** Look for a professional website, reviews, and a physical address. Be wary of companies that only exist on messaging apps.
-\n- **Never Pay for a Job:** You should not have to pay for training, background checks, or equipment. A common scam involves sending you a fake check to "buy equipment" and asking you to wire the "extra" money back.
-\n- **Protect Your Personal Information:** Don't provide bank details or your social security number before verifying the job is real and receiving a formal offer.
-    `,
+    content: `Scammers post fake job listings or contact you directly with offers that are too good to be true, aiming to steal your information or money.
+
+How to Prevent:
+Research the company. Look for a professional website, reviews, and a physical address. Be wary of companies that only exist on messaging apps.
+You should never have to pay for a job. A common scam involves sending you a fake check to "buy equipment" and asking you to wire the "extra" money back.
+Protect your personal information. Don't provide bank details or your social security number before verifying the job is real and receiving a formal offer.`,
   },
   {
     id: 'investment',
     title: 'Investment Scams',
     icon: TrendingUp,
     content: `These scams promise high, guaranteed returns with little to no risk, often involving cryptocurrency or "exclusive" opportunities.
-\n\n**How to Prevent:**
-\n- **If It Sounds Too Good to Be True, It Is:** All investments carry risk. Guaranteed high returns are a major red flag.
-\n- **Beware of Pressure:** Scammers will rush you to invest "before the opportunity is gone."
-\n- **Verify the Platform:** Use only well-known, regulated cryptocurrency exchanges and investment platforms.
-\n- **"Pig Butchering":** Be cautious of strangers who contact you online, build a relationship over weeks, and then start giving you investment advice.
-    `,
+
+How to Prevent:
+If it sounds too good to be true, it is. All investments carry risk, and guaranteed high returns are a major red flag.
+Beware of pressure tactics. Scammers will rush you to invest "before the opportunity is gone."
+Use only well-known, regulated cryptocurrency exchanges and investment platforms.
+Be cautious of strangers who contact you online, build a relationship, and then start giving you investment advice. This is a common tactic called "pig butchering."`,
   },
   {
     id: 'delivery-scams',
     title: 'Delivery Scams',
     icon: Truck,
     content: `You receive a text or email about a package delivery, often with a small "redelivery fee" or "customs charge."
-\n\n**How to Prevent:**
-\n- **Use Official Tracking:** Always track your packages directly on the official courier's website (e.g., FedEx, UPS, USPS).
-\n- **Check the Link:** Phishing links will often use misspelled versions of real company names.
-\n- **No Unexpected Fees:** Major couriers typically do not charge redelivery fees via text message. Customs fees are usually paid directly to the courier through their official portal, not a random link.
-    `,
+
+How to Prevent:
+Always track your packages directly on the official courier's website (e.g., FedEx, UPS, USPS).
+Check the link carefully. Phishing links will often use misspelled versions of real company names.
+Major couriers typically do not charge redelivery fees via text message. Customs fees are usually paid directly to the courier through their official portal, not a random link.`,
   },
   {
     id: 'romance-scams',
     title: 'Romance Scams',
     icon: HeartHandshake,
     content: `Scammers create fake profiles on dating sites and social media to build relationships with you, with the goal of eventually asking for money.
-\n\n**How to Prevent:**
-\n- **Stay on the Platform:** Scammers will try to move the conversation to a private chat app quickly. Be cautious.
-\n- **Never Send Money:** No matter how sad or urgent the story (a medical emergency, a plane ticket to visit you, a failed business), never send money to someone you've only met online.
-\n- **Do a Reverse Image Search:** Use their profile picture to see if it's a stock photo or has been stolen from someone else's profile.
-    `,
+
+How to Prevent:
+Be cautious if they try to move the conversation to a private chat app quickly.
+Never send money to someone you've only met online, no matter how sad or urgent the story is.
+Do a reverse image search of their profile picture to see if it's a stock photo or has been stolen from someone else's profile.`,
   },
 ];
 
@@ -111,7 +109,6 @@ export default function PreventionPage() {
           <p className="mt-4 text-lg text-muted-foreground">
             Knowledge is your best defense. Learn to recognize the signs of
             common scams and take proactive steps to protect yourself, your
-frequently
             finances, and your personal information.
           </p>
         </div>
