@@ -3,9 +3,9 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A digital shield protecting a user on a laptop, symbolizing online safety and cybersecurity.",
-      "imageUrl": "https://picsum.photos/seed/hacker/600/400",
-      "imageHint": "hacker security"
+      "description": "A yellow 'Warning Scam Alert' sign resting on a computer keyboard.",
+      "imageUrl": "https://picsum.photos/seed/scam-alert/600/400",
+      "imageHint": "scam alert"
     },
     {
       "id": "carousel-1",
