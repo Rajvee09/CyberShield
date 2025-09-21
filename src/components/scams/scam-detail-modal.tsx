@@ -2,10 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {
-  format,
-  formatDistanceToNow,
-} from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import {
   Calendar,
   Globe,
@@ -16,18 +13,37 @@ import {
   ShieldAlert,
   FileWarning,
   LogIn,
+  Trash2,
 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { Scam, User, Comment } from '@/lib/definitions';
-import { getCommentsByScamId, getUserById, addComment } from '@/lib/data';
+import {
+  getCommentsByScamId,
+  getUserById,
+  addComment,
+  deleteComment,
+  deleteScam,
+} from '@/lib/data';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -35,6 +51,8 @@ import { cn } from '@/lib/utils';
 import { Separator } from '../ui/separator';
 import { useAuth } from '@/context/auth-context';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 interface ScamDetailModalProps {
   scam: Scam;
@@ -66,6 +84,8 @@ export default function ScamDetailModal({
   onOpenChange,
 }: ScamDetailModalProps) {
   const { user: currentUser } = useAuth();
+  const { toast } = useToast();
+  const router = useRouter();
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [newComment, setNewComment] = useState('');
   const [isPosting, setIsPosting] = useState(false);
@@ -115,7 +135,6 @@ export default function ScamDetailModal({
         currentUser.id,
         newComment.trim()
       );
-      // Replace temporary comment with real one from server
       setComments(prev =>
         prev.map(c =>
           c.comment.id === tempCommentId
@@ -125,10 +144,43 @@ export default function ScamDetailModal({
       );
     } catch (error) {
       console.error('Failed to post comment:', error);
-      // Revert optimistic update on failure
       setComments(prev => prev.filter(c => c.comment.id !== tempCommentId));
     } finally {
       setIsPosting(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    const originalComments = comments;
+    setComments(prev => prev.filter(c => c.comment.id !== commentId));
+
+    try {
+      await deleteComment(commentId);
+      toast({ title: 'Comment deleted' });
+    } catch (error) {
+      console.error('Failed to delete comment:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to delete comment.',
+      });
+      setComments(originalComments);
+    }
+  };
+
+  const handleDeleteScam = async () => {
+    try {
+      await deleteScam(scam.id);
+      toast({ title: 'Scam report deleted' });
+      onOpenChange(false);
+      router.refresh();
+    } catch (error) {
+      console.error('Failed to delete scam:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to delete scam report.',
+      });
     }
   };
 
@@ -196,7 +248,9 @@ export default function ScamDetailModal({
 
           {scam.financialLoss && scam.financialLoss > 0 && (
             <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-              <h3 className="font-semibold text-red-900">Financial Loss Reported</h3>
+              <h3 className="font-semibold text-red-900">
+                Financial Loss Reported
+              </h3>
               <p className="font-headline text-3xl font-bold text-red-700">
                 $
                 {scam.financialLoss.toLocaleString(undefined, {
@@ -247,7 +301,7 @@ export default function ScamDetailModal({
                   </>
                 ) : comments.length > 0 ? (
                   comments.map(({ comment: c, user: commentUser }) => (
-                    <div key={c.id} className="flex gap-4">
+                    <div key={c.id} className="group flex gap-4">
                       <Avatar>
                         <AvatarImage
                           src={commentUser?.avatarUrl}
@@ -265,6 +319,43 @@ export default function ScamDetailModal({
                               addSuffix: true,
                             })}
                           </p>
+                          {currentUser?.id === c.authorId && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-6 w-6 opacity-0 group-hover:opacity-100"
+                                >
+                                  <Trash2 className="h-4 w-4 text-muted-foreground" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Delete Comment?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This will permanently delete your comment.
+                                    This action cannot be undone.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>
+                                    Cancel
+                                  </AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => handleDeleteComment(c.id)}
+                                    className={cn(
+                                      buttonVariants({ variant: 'destructive' })
+                                    )}
+                                  >
+                                    Delete
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
                         </div>
                         <p className="mt-1 text-muted-foreground">
                           {c.content}
@@ -279,7 +370,7 @@ export default function ScamDetailModal({
                 )}
               </div>
 
-             {currentUser ? (
+              {currentUser ? (
                 <div className="mt-8 flex gap-4">
                   <Avatar>
                     <AvatarImage
@@ -308,8 +399,12 @@ export default function ScamDetailModal({
                 </div>
               ) : (
                 <div className="mt-8 rounded-lg border bg-secondary/30 p-6 text-center">
-                  <h3 className="font-headline text-lg font-semibold">Join the Conversation</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">You must be logged in to post a comment.</p>
+                  <h3 className="font-headline text-lg font-semibold">
+                    Join the Conversation
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    You must be logged in to post a comment.
+                  </p>
                   <Button asChild className="mt-4">
                     <Link href="/auth">
                       <LogIn className="mr-2 h-4 w-4" />
@@ -321,6 +416,35 @@ export default function ScamDetailModal({
             </CardContent>
           </Card>
         </div>
+        {currentUser && currentUser.id === scam.authorId && (
+          <DialogFooter className="border-t pt-4">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive">
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete Report
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Scam Report?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete this scam report and all of
+                    its comments. This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteScam}
+                    className={cn(buttonVariants({ variant: 'destructive' }))}
+                  >
+                    Yes, Delete Report
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );

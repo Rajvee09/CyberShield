@@ -108,7 +108,7 @@ export async function getCommentsByScamId(
   return allComments
     .filter(comment => comment.scamId === scamId)
     .sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 }
 
@@ -156,4 +156,29 @@ export async function addUser(userData: Omit<User, 'id' | 'avatarUrl'>): Promise
   users.push(newUser);
   console.log('New user created:', newUser);
   return newUser;
+}
+
+export async function deleteScam(scamId: string): Promise<boolean> {
+  await delay(400);
+  const scamIndex = scams.findIndex(s => s.id === scamId);
+  if (scamIndex === -1) return false;
+
+  scams.splice(scamIndex, 1);
+  const initialCommentsLength = comments.length;
+  const filteredComments = comments.filter(c => c.scamId !== scamId);
+  comments.length = 0;
+  Array.prototype.push.apply(comments, filteredComments);
+
+  console.log(`Scam ${scamId} and related comments deleted.`);
+  return true;
+}
+
+export async function deleteComment(commentId: string): Promise<boolean> {
+  await delay(200);
+  const commentIndex = comments.findIndex(c => c.id === commentId);
+  if (commentIndex === -1) return false;
+
+  comments.splice(commentIndex, 1);
+  console.log(`Comment ${commentId} deleted.`);
+  return true;
 }
