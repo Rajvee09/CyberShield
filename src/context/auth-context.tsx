@@ -60,8 +60,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   
   const syncUser = useCallback((user: User) => {
     setUser(user);
-    router.refresh();
-  }, [router]);
+    // No need to refresh router here, it will be handled by the component calling syncUser
+  }, []);
 
 
   const logout = () => {
@@ -69,7 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logoutAction().then(() => {
         setUser(null);
         toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
-        // The redirect in logoutAction handles the page change
+        router.push('/');
+        router.refresh();
       });
     });
   };
