@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Menu, ShieldAlert } from 'lucide-react';
+import { Menu, ShieldAlert, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import {
@@ -47,6 +47,10 @@ export function Header() {
               <ShieldAlert className="mr-2 h-4 w-4" /> Report a Scam
             </Link>
           </Button>
+          <Button variant="outline">
+            <User className="mr-2 h-4 w-4" />
+            Login / Sign Up
+          </Button>
         </div>
 
         <div className="md:hidden">
@@ -65,24 +69,34 @@ export function Header() {
                   </span>
                 </Link>
               </SheetHeader>
-              <div className="mt-8 flex flex-col gap-6">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg font-medium"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <Button asChild size="lg" className="mt-4">
-                  <Link href="/report-scam">
-                    <ShieldAlert className="mr-2 h-4 w-4" /> Report a Scam
-                  </Link>
-                </Button>
-                <div className="mt-4 flex justify-center">
-                  <ThemeToggle />
+              <div className="mt-8 flex h-full flex-col">
+                <div className="flex flex-col gap-6">
+                  {navLinks.map(link => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="text-lg font-medium"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  <Button asChild size="lg" className="mt-4">
+                    <Link href="/report-scam">
+                      <ShieldAlert className="mr-2 h-4 w-4" /> Report a Scam
+                    </Link>
+                  </Button>
                 </div>
+
+                <div className="mt-auto flex flex-col gap-4 pt-8">
+                   <Button variant="outline">
+                    <User className="mr-2 h-4 w-4" />
+                    Login / Sign Up
+                  </Button>
+                  <div className="flex justify-center">
+                    <ThemeToggle />
+                  </div>
+                </div>
+
               </div>
             </SheetContent>
           </Sheet>
