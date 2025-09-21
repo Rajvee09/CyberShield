@@ -166,21 +166,21 @@ export default function ReportScamForm() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Scam Title *</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Brief title describing the scam"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Scam Title *</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Brief title describing the scam"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               <FormField
                 control={form.control}
@@ -209,7 +209,7 @@ export default function ReportScamForm() {
                   </FormItem>
                 )}
               />
-               <FormField
+              <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => (
@@ -238,33 +238,32 @@ export default function ReportScamForm() {
               />
             </div>
             <FormField
-                control={form.control}
-                name="severity"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Severity Level</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a severity level" />
-                        </Trigger>
-                      </FormControl>
-                      <SelectContent>
-                        {severityLevels.map(level => (
-                          <SelectItem key={level} value={level}>
-                            {level}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              control={form.control}
+              name="severity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Severity Level</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a severity level" />
+                      </Trigger>
+                    </FormControl>
+                    <SelectContent>
+                      {severityLevels.map(level => (
+                        <SelectItem key={level} value={level}>
+                          {level}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="description"
@@ -282,7 +281,6 @@ export default function ReportScamForm() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="financialLoss"
@@ -296,7 +294,6 @@ export default function ReportScamForm() {
                 </FormItem>
               )}
             />
-
             <div className="space-y-4">
               <FormLabel>Warning Signs</FormLabel>
               <FormDescription>
@@ -342,7 +339,6 @@ export default function ReportScamForm() {
                 Add Warning Sign
               </Button>
             </div>
-
             <Button
               type="submit"
               disabled={isLoading}
