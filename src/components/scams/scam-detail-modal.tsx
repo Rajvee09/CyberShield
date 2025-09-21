@@ -45,7 +45,7 @@ import {
   deleteScam,
 } from '@/lib/data';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Separator } from '../ui/separator';
@@ -462,3 +462,5 @@ function CommentSkeleton() {
     </div>
   );
 }
+
+    
