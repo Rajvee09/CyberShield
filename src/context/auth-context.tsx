@@ -35,7 +35,7 @@ const getCookie = (name: string): string | undefined => {
 };
 
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children }: { children: React.Node }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -69,8 +69,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       logoutAction().then(() => {
         setUser(null);
         toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
-        router.push('/');
-        router.refresh();
+        // The redirect in logoutAction handles navigation.
+        // A full page refresh might be needed if state isn't updating across layouts.
+        router.refresh(); 
       });
     });
   };
