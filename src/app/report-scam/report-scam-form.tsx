@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -28,6 +28,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { FileDragDrop } from '@/components/ui/file-drag-drop';
 
 const scamTypes = [
   'Phishing',
@@ -61,6 +62,15 @@ const severityLevels = [
   'Critical - Financial loss occurred',
 ] as const;
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ACCEPTED_FILE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'video/mp4',
+  'video/quicktime',
+];
+
 const FormSchema = z.object({
   title: z
     .string()
@@ -81,6 +91,13 @@ const FormSchema = z.object({
     .max(2000, {
       message: 'Description cannot be longer than 2000 characters.',
     }),
+  attachments: z
+    .array(
+      z.instanceof(File).refine(file => file.size <= MAX_FILE_SIZE, {
+        message: 'File size must be less than 10MB.',
+      })
+    )
+    .optional(),
   financialLoss: z.string().optional(),
   warningSigns: z
     .array(
@@ -123,6 +140,10 @@ export default function ReportScamForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -133,6 +154,7 @@ export default function ReportScamForm() {
       severity: 'Medium - Moderate risk',
       financialLoss: '',
       warningSigns: [{ value: '' }],
+      attachments: [],
     },
   });
 
@@ -141,13 +163,23 @@ export default function ReportScamForm() {
     name: 'warningSigns',
   });
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  if (!isClient) {
+    return <FormSkeleton />;
+  }
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
     console.log('Scam Report Submitted:', data);
+
+    // Simulate file uploads
+    if (data.attachments && data.attachments.length > 0) {
+      for (const file of data.attachments) {
+        console.log(`Uploading ${file.name}...`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+        console.log(`${file.name} uploaded.`);
+      }
+    }
+
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     setIsLoading(false);
@@ -157,10 +189,6 @@ export default function ReportScamForm() {
         'Thank you for helping keep the community safe. Your report has been received.',
     });
     form.reset();
-  }
-
-  if (!isClient) {
-    return <FormSkeleton />;
   }
 
   return (
@@ -230,7 +258,7 @@ export default function ReportScamForm() {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="What type of scam is this?" />
-                        </Trigger>
+                        </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {scamTypes.map(type => (
@@ -258,7 +286,7 @@ export default function ReportScamForm() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a severity level" />
-                      </Trigger>
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {severityLevels.map(level => (
@@ -285,6 +313,26 @@ export default function ReportScamForm() {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="attachments"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Attach Images/Videos (Optional)</FormLabel>
+                  <FormControl>
+                    <FileDragDrop
+                      onFilesChange={field.onChange}
+                      accept={ACCEPTED_FILE_TYPES.join(',')}
+                      maxSize={MAX_FILE_SIZE}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Attach screenshots, screen recordings, or any other relevant files. Max file size: 10MB.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
