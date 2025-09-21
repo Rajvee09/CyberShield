@@ -1,11 +1,13 @@
 
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+
 import {
   Card,
   CardContent,
@@ -32,6 +34,7 @@ import { Input } from '@/components/ui/input';
 import { Loader2, LogIn, TriangleAlert } from 'lucide-react';
 import { loginAction, signupAction } from './actions';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useAuth } from '@/context/auth-context';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -58,10 +61,13 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
 }
 
 export default function AuthPage() {
-  const [loginState, loginFormAction] = useActionState(loginAction, {
+  const router = useRouter();
+  const { syncUser } = useAuth();
+
+  const [loginState, loginFormAction, isLoginPending] = useActionState(loginAction, {
     message: '',
   });
-  const [signupState, signupFormAction] = useActionState(signupAction, {
+  const [signupState, signupFormAction, isSignupPending] = useActionState(signupAction, {
     message: '',
   });
 
@@ -74,6 +80,20 @@ export default function AuthPage() {
     resolver: zodResolver(signupSchema),
     defaultValues: { name: '', email: '', password: '' },
   });
+
+  useEffect(() => {
+    if (loginState.success && loginState.user) {
+      syncUser(loginState.user);
+      router.push('/');
+    }
+  }, [loginState, router, syncUser]);
+
+  useEffect(() => {
+    if (signupState.success && signupState.user) {
+      syncUser(signupState.user);
+      router.push('/');
+    }
+  }, [signupState, router, syncUser]);
 
   return (
     <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-12">
@@ -98,7 +118,7 @@ export default function AuthPage() {
                   action={loginFormAction}
                   className="space-y-6"
                 >
-                   {loginState.message && (
+                   {loginState.message && !loginState.success && (
                      <Alert variant="destructive">
                        <TriangleAlert className="h-4 w-4" />
                        <AlertTitle>Login Failed</AlertTitle>
@@ -161,7 +181,7 @@ export default function AuthPage() {
                   action={signupFormAction}
                   className="space-y-6"
                 >
-                  {signupState.message && (
+                  {signupState.message && !signupState.success && (
                     <Alert variant="destructive">
                       <TriangleAlert className="h-4 w-4" />
                       <AlertTitle>Signup Failed</AlertTitle>

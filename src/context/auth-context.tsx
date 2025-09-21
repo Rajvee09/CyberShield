@@ -8,6 +8,7 @@ import {
   useEffect,
   type ReactNode,
   startTransition,
+  useCallback,
 } from 'react';
 import type { User } from '@/lib/definitions';
 import { updateUser } from '@/lib/data';
@@ -19,6 +20,7 @@ interface AuthContextType {
   user: User | null;
   logout: () => void;
   updateUserProfile: (data: { name: string; avatarUrl: string }) => Promise<boolean>;
+  syncUser: (user: User) => void;
   isLoading: boolean;
 }
 
@@ -40,33 +42,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    const checkUser = () => {
-      setIsLoading(true);
-      try {
-        const storedUserCookie = getCookie('cyber-shield-user-client');
-        if (storedUserCookie) {
-          const parsedUser = JSON.parse(decodeURIComponent(storedUserCookie));
-          setUser(parsedUser);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Failed to parse user from cookie', error);
+    try {
+      const storedUserCookie = getCookie('cyber-shield-user-client');
+      if (storedUserCookie) {
+        const parsedUser = JSON.parse(decodeURIComponent(storedUserCookie));
+        setUser(parsedUser);
+      } else {
         setUser(null);
-      } finally {
-        setIsLoading(false);
       }
-    };
-    
-    checkUser();
+    } catch (error) {
+      console.error('Failed to parse user from cookie', error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+  
+  const syncUser = useCallback((user: User) => {
+    setUser(user);
+    router.refresh();
+  }, [router]);
+
 
   const logout = () => {
     startTransition(() => {
       logoutAction().then(() => {
         setUser(null);
         toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
-        router.refresh();
+        // The redirect in logoutAction handles the page change
       });
     });
   };
@@ -83,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const userString = JSON.stringify(updatedUser);
         document.cookie = `cyber-shield-user-client=${encodeURIComponent(userString)}; max-age=${60 * 60 * 24 * 7}; path=/`;
 
+        router.refresh();
         return true;
       }
       return false;
@@ -96,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 
   return (
-    <AuthContext.Provider value={{ user, logout, isLoading, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, logout, isLoading, updateUserProfile, syncUser }}>
       {children}
     </AuthContext.Provider>
   );

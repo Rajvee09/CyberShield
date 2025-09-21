@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { getUserByEmail, addUser } from '@/lib/data';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import type { User } from '@/lib/definitions';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -17,8 +18,8 @@ const signupSchema = z.object({
   password: z.string().min(8),
 });
 
-// This is a helper function to set the cookie and update client-side storage
-const loginUser = (user: any) => {
+// This is a helper function to set the cookie.
+const loginUser = (user: User) => {
   const userString = JSON.stringify(user);
   // This httpOnly cookie is for the server to recognize the user.
   cookies().set('cyber-shield-user', userString, {
@@ -35,13 +36,13 @@ const loginUser = (user: any) => {
 };
 
 export async function loginAction(
-  prevState: { message: string },
+  prevState: { message: string, user?: User | null, success?: boolean },
   formData: FormData
 ) {
   const parsed = loginSchema.safeParse(Object.fromEntries(formData));
 
   if (!parsed.success) {
-    return { message: 'Invalid form data' };
+    return { message: 'Invalid form data', success: false };
   }
 
   const { email, password } = parsed.data;
@@ -50,27 +51,26 @@ export async function loginAction(
     const user = await getUserByEmail(email);
 
     if (!user || user.password !== password) {
-      return { message: 'Invalid email or password.' };
+      return { message: 'Invalid email or password.', success: false };
     }
     
     loginUser(user);
+    return { message: 'Login successful', user, success: true };
 
   } catch (e) {
     console.error(e);
-    return { message: 'An error occurred during login.' };
+    return { message: 'An error occurred during login.', success: false };
   }
-
-  redirect('/');
 }
 
 export async function signupAction(
-  prevState: { message: string },
+  prevState: { message: string, user?: User | null, success?: boolean },
   formData: FormData
 ) {
   const parsed = signupSchema.safeParse(Object.fromEntries(formData));
 
   if (!parsed.success) {
-    return { message: 'Invalid form data' };
+    return { message: 'Invalid form data', success: false };
   }
 
   const { name, email, password } = parsed.data;
@@ -78,19 +78,18 @@ export async function signupAction(
   try {
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
-      return { message: 'An account with this email already exists.' };
+      return { message: 'An account with this email already exists.', success: false };
     }
 
     const newUser = await addUser({ name, email, password });
     
     loginUser(newUser);
+    return { message: 'Signup successful', user: newUser, success: true };
 
   } catch (e) {
     console.error(e);
-    return { message: 'An error occurred during sign up.' };
+    return { message: 'An error occurred during sign up.', success: false };
   }
-
-  redirect('/');
 }
 
 export async function logoutAction() {
