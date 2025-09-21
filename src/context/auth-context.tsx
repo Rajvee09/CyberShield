@@ -62,9 +62,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = () => {
-    setUser(null);
     startTransition(() => {
       logoutAction().then(() => {
+        setUser(null);
         toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
         router.refresh();
       });
