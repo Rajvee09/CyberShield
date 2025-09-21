@@ -46,8 +46,8 @@ export function Footer() {
            <div className="space-y-2">
             <h4 className="font-medium">Contact Us</h4>
             <ul className="space-y-1 text-muted-foreground">
-              <li><a href="mailto:contact@cybershield.com" className="hover:text-primary">contact@cybershield.com</a></li>
-              <li><a href="tel:+1234567890" className="hover:text-primary">(123) 456-7890</a></li>
+              <li><a href="mailto:xxxx@cybershield.com" className="hover:text-primary">xxxx@cybershield.com</a></li>
+              <li><a href="tel:+91-XXXXXXXXXX" className="hover:text-primary">+91-XXXXXXXXXX</a></li>
             </ul>
           </div>
         </div>
