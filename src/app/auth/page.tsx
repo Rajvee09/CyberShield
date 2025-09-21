@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -28,9 +28,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Loader2, LogIn } from 'lucide-react';
-import { useAuth } from '@/context/auth-context';
-import { useRouter } from 'next/navigation';
+import { Loader2, LogIn, TriangleAlert } from 'lucide-react';
+import { loginAction, signupAction } from './actions';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -45,10 +45,24 @@ const signupSchema = z.object({
     .min(8, { message: 'Password must be at least 8 characters.' }),
 });
 
+function SubmitButton({ children }: { children: React.ReactNode }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending} className="w-full">
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {children}
+    </Button>
+  );
+}
+
 export default function AuthPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const { login, signup } = useAuth();
-  const router = useRouter();
+  const [loginState, loginFormAction] = useFormState(loginAction, {
+    message: '',
+  });
+  const [signupState, signupFormAction] = useFormState(signupAction, {
+    message: '',
+  });
 
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -59,24 +73,6 @@ export default function AuthPage() {
     resolver: zodResolver(signupSchema),
     defaultValues: { name: '', email: '', password: '' },
   });
-
-  const onLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
-    setIsLoading(true);
-    const success = await login(values.email, values.password);
-    if (success) {
-      router.push('/');
-    }
-    setIsLoading(false);
-  };
-
-  const onSignupSubmit = async (values: z.infer<typeof signupSchema>) => {
-    setIsLoading(true);
-    const success = await signup(values.name, values.email, values.password);
-     if (success) {
-      router.push('/');
-    }
-    setIsLoading(false);
-  };
 
   return (
     <div className="container mx-auto flex min-h-[80vh] items-center justify-center px-4 py-12">
@@ -97,10 +93,14 @@ export default function AuthPage() {
             </CardHeader>
             <CardContent>
               <Form {...loginForm}>
-                <form
-                  onSubmit={loginForm.handleSubmit(onLoginSubmit)}
-                  className="space-y-6"
-                >
+                <form action={loginFormAction} className="space-y-6">
+                   {loginState.message && (
+                     <Alert variant="destructive">
+                       <TriangleAlert className="h-4 w-4" />
+                       <AlertTitle>Login Failed</AlertTitle>
+                       <AlertDescription>{loginState.message}</AlertDescription>
+                     </Alert>
+                   )}
                   <FormField
                     control={loginForm.control}
                     name="email"
@@ -125,18 +125,17 @@ export default function AuthPage() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} />
+                          <Input
+                            type="password"
+                            placeholder="••••••••"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={isLoading} className="w-full">
-                    {isLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Login
-                  </Button>
+                  <SubmitButton>Login</SubmitButton>
                 </form>
               </Form>
             </CardContent>
@@ -145,17 +144,23 @@ export default function AuthPage() {
         <TabsContent value="signup">
           <Card>
             <CardHeader>
-              <CardTitle className="font-headline text-2xl">Create an Account</CardTitle>
+              <CardTitle className="font-headline text-2xl">
+                Create an Account
+              </CardTitle>
               <CardDescription>
                 Join the CyberShield community to report scams and help others.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...signupForm}>
-                <form
-                  onSubmit={signupForm.handleSubmit(onSignupSubmit)}
-                  className="space-y-6"
-                >
+                <form action={signupFormAction} className="space-y-6">
+                  {signupState.message && (
+                    <Alert variant="destructive">
+                      <TriangleAlert className="h-4 w-4" />
+                      <AlertTitle>Signup Failed</AlertTitle>
+                      <AlertDescription>{signupState.message}</AlertDescription>
+                    </Alert>
+                  )}
                   <FormField
                     control={signupForm.control}
                     name="name"
@@ -193,18 +198,17 @@ export default function AuthPage() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} />
+                          <Input
+                            type="password"
+                            placeholder="••••••••"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" disabled={isLoading} className="w-full">
-                    {isLoading && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Sign Up
-                  </Button>
+                  <SubmitButton>Sign Up</SubmitButton>
                 </form>
               </Form>
             </CardContent>
