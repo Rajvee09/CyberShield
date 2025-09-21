@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -57,10 +57,10 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
 }
 
 export default function AuthPage() {
-  const [loginState, loginFormAction] = useFormState(loginAction, {
+  const [loginState, loginFormAction] = useActionState(loginAction, {
     message: '',
   });
-  const [signupState, signupFormAction] = useFormState(signupAction, {
+  const [signupState, signupFormAction] = useActionState(signupAction, {
     message: '',
   });
 
