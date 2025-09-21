@@ -24,16 +24,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// This is a mock server action to log out.
-// In a real app with cookies, you'd have a server action to clear the cookie.
-async function serverLogout() {
-  'use server';
-  // This is a placeholder. With httpOnly cookies, this needs to be a server action
-  // that clears the cookie. For the localStorage approach, it's client-side.
-  console.log('Server logout called');
-}
-
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +99,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('cyber-shield-user-client');
-    // serverLogout(); // This would be the call in a real cookie-based auth setup
     toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
     router.push('/');
     router.refresh();
