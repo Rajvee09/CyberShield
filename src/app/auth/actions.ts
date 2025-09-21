@@ -17,6 +17,23 @@ const signupSchema = z.object({
   password: z.string().min(8),
 });
 
+// This is a helper function to set the cookie and update client-side storage
+const loginUser = (user: any) => {
+  const userString = JSON.stringify(user);
+  cookies().set('cyber-shield-user', userString, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24 * 7, // One week
+    path: '/',
+  });
+  // We also set a value in localStorage for the client-side AuthProvider to sync up.
+  // This is a common pattern when mixing server actions with client-side context.
+  cookies().set('cyber-shield-user-client', userString, {
+    maxAge: 60 * 60 * 24 * 7,
+    path: '/',
+  });
+};
+
 export async function loginAction(
   prevState: { message: string },
   formData: FormData
@@ -35,13 +52,9 @@ export async function loginAction(
     if (!user || user.password !== password) {
       return { message: 'Invalid email or password.' };
     }
+    
+    loginUser(user);
 
-    cookies().set('cyber-shield-user', JSON.stringify(user), {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // One week
-      path: '/',
-    });
   } catch (e) {
     console.error(e);
     return { message: 'An error occurred during login.' };
@@ -69,13 +82,9 @@ export async function signupAction(
     }
 
     const newUser = await addUser({ name, email, password });
+    
+    loginUser(newUser);
 
-    cookies().set('cyber-shield-user', JSON.stringify(newUser), {
-      httpOnly: true,
-      secure: process.env.NODE-ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // One week
-      path: '/',
-    });
   } catch (e) {
     console.error(e);
     return { message: 'An error occurred during sign up.' };

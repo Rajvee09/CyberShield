@@ -9,14 +9,12 @@ import {
   type ReactNode,
 } from 'react';
 import type { User } from '@/lib/definitions';
-import { addUser, getUserByEmail, updateUser } from '@/lib/data';
+import { updateUser } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, pass: string) => Promise<boolean>;
-  signup: (name: string, email: string, pass: string) => Promise<boolean>;
   logout: () => void;
   updateUserProfile: (data: { name: string; avatarUrl: string }) => Promise<boolean>;
   isLoading: boolean;
@@ -31,77 +29,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // This is a temporary solution for client-side state hydration.
-    // In a real app, the user would be fetched from the server based on a session cookie.
-    try {
-      const storedUser = localStorage.getItem('cyber-shield-user-client');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+    // This function runs when the component mounts to check for a logged-in user
+    // in localStorage. This is part of how we keep the user logged in across page loads.
+    const checkUser = () => {
+      setIsLoading(true);
+      try {
+        const storedUser = localStorage.getItem('cyber-shield-user-client');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Failed to parse user from localStorage', error);
+        localStorage.removeItem('cyber-shield-user-client');
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Failed to parse user from localStorage', error);
-      localStorage.removeItem('cyber-shield-user-client');
-    } finally {
-      setIsLoading(false);
-    }
+    };
+    
+    checkUser();
+
+    // After a server action (login/signup), the page refreshes.
+    // The new user cookie should be set, but our client-side state needs to sync.
+    // This event listener helps sync state without a full page reload if we were
+    // doing client-side routing. With server-side redirects, `checkUser` on mount is key.
+    window.addEventListener('storage', checkUser);
+    return () => {
+      window.removeEventListener('storage', checkUser);
+    };
   }, []);
-
-  const login = async (email: string, pass: string) => {
-    setIsLoading(true);
-    try {
-      const foundUser = await getUserByEmail(email);
-      if (foundUser && foundUser.password === pass) {
-        setUser(foundUser);
-        localStorage.setItem('cyber-shield-user-client', JSON.stringify(foundUser));
-        toast({ title: 'Login Successful', description: `Welcome back, ${foundUser.name}!` });
-        router.push('/');
-        router.refresh();
-        return true;
-      } else {
-        toast({ variant: 'destructive', title: 'Login Failed', description: 'Invalid email or password.' });
-        return false;
-      }
-    } catch (error) {
-      console.error(error);
-      toast({ variant: 'destructive', title: 'Login Error', description: 'An unexpected error occurred.' });
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const signup = async (name: string, email: string, pass: string) => {
-     setIsLoading(true);
-    try {
-      const existingUser = await getUserByEmail(email);
-      if (existingUser) {
-        toast({ variant: 'destructive', title: 'Signup Failed', description: 'An account with this email already exists.' });
-        return false;
-      }
-      
-      const newUser = await addUser({ name, email, password: pass });
-      setUser(newUser);
-      localStorage.setItem('cyber-shield-user-client', JSON.stringify(newUser));
-      toast({ title: 'Signup Successful', description: `Welcome, ${newUser.name}!` });
-      router.push('/');
-      router.refresh();
-      return true;
-
-    } catch (error) {
-      console.error(error);
-      toast({ variant: 'destructive', title: 'Signup Error', description: 'An unexpected error occurred.' });
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const logout = () => {
     setUser(null);
+    // Also clear the cookie by setting its expiration to the past
+    document.cookie = 'cyber-shield-user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     localStorage.removeItem('cyber-shield-user-client');
     toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
     router.push('/');
-    router.refresh();
+    router.refresh(); // Ensures server components re-render with the user logged out
   };
   
   const updateUserProfile = async (data: { name: string; avatarUrl: string }) => {
@@ -111,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const updatedUser = await updateUser(user.id, data);
       if (updatedUser) {
         setUser(updatedUser);
+        // Also update the local storage to persist the changes
         localStorage.setItem('cyber-shield-user-client', JSON.stringify(updatedUser));
         return true;
       }
@@ -125,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isLoading, updateUserProfile }}>
+    <AuthContext.Provider value={{ user, logout, isLoading, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );
