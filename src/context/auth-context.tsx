@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { User } from '@/lib/definitions';
-import { addUser, getUserByEmail } from '@/lib/data';
+import { addUser, getUserByEmail, updateUser } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
@@ -17,6 +17,7 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<boolean>;
   signup: (name: string, email: string, pass: string) => Promise<boolean>;
   logout: () => void;
+  updateUserProfile: (data: { name: string; avatarUrl: string }) => Promise<boolean>;
   isLoading: boolean;
 }
 
@@ -93,9 +94,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('cyber-shield-user');
     toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
   };
+  
+  const updateUserProfile = async (data: { name: string; avatarUrl: string }) => {
+    if (!user) return false;
+    setIsLoading(true);
+    try {
+      const updatedUser = await updateUser(user.id, data);
+      if (updatedUser) {
+        setUser(updatedUser);
+        localStorage.setItem('cyber-shield-user', JSON.stringify(updatedUser));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, isLoading, updateUserProfile }}>
       {children}
     </AuthContext.Provider>
   );

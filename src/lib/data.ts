@@ -158,6 +158,22 @@ export async function addUser(userData: Omit<User, 'id' | 'avatarUrl'>): Promise
   return newUser;
 }
 
+export async function updateUser(
+  userId: string,
+  updateData: Partial<Pick<User, 'name' | 'avatarUrl'>>
+): Promise<User | undefined> {
+  await delay(300);
+  const allUsers = users as User[];
+  const userIndex = allUsers.findIndex(u => u.id === userId);
+  if (userIndex === -1) {
+    return undefined;
+  }
+  const updatedUser = { ...allUsers[userIndex], ...updateData };
+  allUsers[userIndex] = updatedUser;
+  console.log('User updated:', updatedUser);
+  return updatedUser;
+}
+
 export async function deleteScam(scamId: string): Promise<boolean> {
   await delay(400);
   const scamIndex = scams.findIndex(s => s.id === scamId);

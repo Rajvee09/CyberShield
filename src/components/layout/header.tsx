@@ -2,7 +2,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, ShieldAlert, User } from 'lucide-react';
+import { Menu, ShieldAlert, User, Edit } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import {
@@ -22,6 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useRouter } from 'next/navigation';
+import EditProfileModal from '../profile/edit-profile-modal';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -34,12 +36,14 @@ const navLinks = [
 export function Header() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     router.push('/');
   };
   return (
+    <>
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
@@ -87,6 +91,11 @@ export function Header() {
                     </p>
                   </div>
                 </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setIsEditProfileOpen(true)}>
+                  <Edit className="mr-2 h-4 w-4" />
+                  <span>Edit Profile</span>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   Log out
@@ -168,5 +177,13 @@ export function Header() {
         </div>
       </div>
     </header>
+    {user && (
+        <EditProfileModal
+          isOpen={isEditProfileOpen}
+          onOpenChange={setIsEditProfileOpen}
+          user={user}
+        />
+      )}
+    </>
   );
 }
