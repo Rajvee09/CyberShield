@@ -3,9 +3,9 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A person's hands typing on a laptop keyboard with a digital lock overlay, representing cybersecurity.",
-      "imageUrl": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=600&auto=format&fit=crop",
-      "imageHint": "cybersecurity protection"
+      "description": "A phone screen displaying a prominent 'Scam Alert' notification, representing the app's purpose.",
+      "imageUrl": "https://images.unsplash.com/photo-1585250011399-24155840043c?q=80&w=600&auto=format&fit=crop",
+      "imageHint": "scam alert"
     },
     {
       "id": "carousel-1",
