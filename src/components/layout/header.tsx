@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/sheet';
 
 const navLinks = [
+  { href: '/', label: 'Home' },
   { href: '/scam-checker', label: 'Scam Checker' },
   { href: '/community', label: 'Community Reports' },
   { href: '/prevention', label: 'Prevention' },
