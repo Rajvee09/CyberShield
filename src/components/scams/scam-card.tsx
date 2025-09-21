@@ -37,12 +37,12 @@ export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
 
   return (
     <Card
-      className="group flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border-gray-200 bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:ring-2 hover:ring-primary/50"
+      className="group flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border bg-card text-card-foreground shadow-md transition-all duration-300 hover:shadow-lg hover:ring-2 hover:ring-primary/50"
       onClick={onCardClick}
     >
       <div>
         <CardHeader className="flex-row items-start justify-between p-0">
-          <CardTitle className="pr-2 font-headline text-lg font-bold leading-tight text-gray-800">
+          <CardTitle className="pr-2 font-headline text-lg font-bold leading-tight">
             {scam.title}
           </CardTitle>
           <TriangleAlert className="h-5 w-5 flex-shrink-0 text-red-500" />
@@ -78,11 +78,11 @@ export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
               </Badge>
             )}
           </div>
-          <p className="line-clamp-3 text-sm text-gray-600">
+          <p className="line-clamp-3 text-sm text-muted-foreground">
             {scam.description}
           </p>
 
-          <div className="flex items-center justify-between text-sm text-gray-500">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>{format(new Date(scam.createdAt), 'MMM d')}</span>
@@ -104,7 +104,7 @@ export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
                 <TriangleAlert className="mr-2 h-4 w-4" />
                 Warning Signs:
               </p>
-              <ul className="list-inside list-disc space-y-1 pl-2 text-gray-600">
+              <ul className="list-inside list-disc space-y-1 pl-2 text-muted-foreground">
                 {scam.warningSigns.slice(0, 2).map((sign, index) => (
                   <li key={index} className="truncate">
                     {sign}
@@ -119,11 +119,11 @@ export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
       <CardFooter className="mt-4 p-0">
         <Button
           variant="outline"
-          className="w-full gap-2 border-gray-300 bg-gray-50 hover:bg-gray-100"
+          className="w-full gap-2"
         >
           <Eye className="h-4 w-4" />
           View Details
-          <ExternalLink className="h-4 w-4 text-gray-400" />
+          <ExternalLink className="h-4 w-4 text-muted-foreground" />
         </Button>
       </CardFooter>
     </Card>
