@@ -10,10 +10,27 @@ export type Scam = {
     | 'Website'
     | 'Social Media'
     | 'Phone Call'
-    | 'Text Message';
+    | 'Text Message'
+    | 'Instagram'
+    | 'Facebook'
+    | 'Flipkart'
+    | 'Blinkit'
+    | 'Zepto'
+    | 'LinkedIn'
+    | 'Freelancing Website'
+    | 'Amazon'
+    | 'Meesho';
   imageId: string;
   authorId: string;
   createdAt: string;
+  financialLoss?: number;
+  severity:
+    | 'Low - Annoyance'
+    | 'Medium - Moderate risk'
+    | 'High - Immediate danger'
+    | 'Critical - Financial loss occurred';
+  warningSigns: string[];
+  isTrending?: boolean;
 };
 
 export type User = {

@@ -39,10 +39,13 @@ export async function getTrendingScams({
     );
   }
 
-  // For "trending", we'll just take the most recent ones for now.
-  const sortedScams = allScams.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  // For "trending", we'll use the `isTrending` flag.
+  const sortedScams = allScams
+    .filter(scam => scam.isTrending)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
 
   if (limit) {
     return sortedScams.slice(0, limit);
@@ -73,6 +76,12 @@ export async function getScamById(id: string): Promise<Scam | undefined> {
   const allScams = scams as Scam[];
   return allScams.find(scam => scam.id === id);
 }
+
+export async function getAllUsers(): Promise<User[]> {
+  await delay(10);
+  return users as User[];
+}
+
 
 export async function getUserById(id: string): Promise<User | undefined> {
   await delay(10);

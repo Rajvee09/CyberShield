@@ -22,11 +22,13 @@ type ScamWithUser = {
 interface HomePageClientProps {
   trendingScams: Scam[];
   recentScamsWithUsers: ScamWithUser[];
+  users: User[];
 }
 
 export default function HomePageClient({
   trendingScams,
   recentScamsWithUsers,
+  users,
 }: HomePageClientProps) {
   const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
 
@@ -85,10 +87,8 @@ export default function HomePageClient({
           </div>
           <TrendingScamsCarousel
             scams={trendingScams}
-            onScamClick={scam => {
-              const user = recentScamsWithUsers.find(
-                item => item.scam.id === scam.id
-              )?.user;
+            users={users}
+            onScamClick={(scam, user) => {
               setSelectedScam({ scam, user });
             }}
           />
@@ -119,12 +119,11 @@ export default function HomePageClient({
               </Button>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {recentScamsWithUsers.map(item => (
               <ScamCard
                 key={item.scam.id}
                 scam={item.scam}
-                user={item.user}
                 onCardClick={() => setSelectedScam(item)}
               />
             ))}

@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -104,16 +103,11 @@ export default function TrendingPage() {
       );
     }
     if (platform !== 'all') {
-      // This logic will filter based on the main platform category or if the description includes the specific platform name.
-      if (['Email', 'Website', 'Social Media', 'Phone Call', 'Text Message'].includes(platform)) {
-         result = result.filter(
-          item => item.scam.platform.toLowerCase() === platform.toLowerCase()
-        );
-      } else {
-         result = result.filter(
-          item => item.scam.description.toLowerCase().includes(platform.toLowerCase())
-        );
-      }
+       result = result.filter(
+        item =>
+          item.scam.platform.toLowerCase() === platform.toLowerCase() ||
+          item.scam.description.toLowerCase().includes(platform.toLowerCase())
+      );
     }
     setFilteredScams(result);
   }, [country, type, platform, scams]);
@@ -189,7 +183,7 @@ export default function TrendingPage() {
         </div>
 
         {isLoading ? (
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {[...Array(8)].map((_, i) => (
               <CardSkeleton key={i} />
             ))}
@@ -200,7 +194,6 @@ export default function TrendingPage() {
                 <ScamCard
                   key={item.scam.id}
                   scam={item.scam}
-                  user={item.user}
                   onCardClick={() => setSelectedScam(item)}
                 />
               ))}
@@ -221,16 +214,28 @@ export default function TrendingPage() {
 
 function CardSkeleton() {
   return (
-    <div className="space-y-4 rounded-lg border p-4">
-      <Skeleton className="h-40 w-full" />
+    <div className="space-y-4 rounded-lg border bg-white p-4">
+      <div className="flex items-start justify-between">
+        <Skeleton className="h-5 w-3/4" />
+        <Skeleton className="h-5 w-5 rounded-full" />
+      </div>
+      <div className="flex gap-2">
+        <Skeleton className="h-5 w-16" />
+        <Skeleton className="h-5 w-20" />
+      </div>
       <div className="space-y-2">
-        <Skeleton className="h-4 w-3/4" />
         <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
       </div>
       <div className="flex items-center justify-between pt-2">
         <Skeleton className="h-6 w-16" />
-        <Skeleton className="h-6 w-12" />
+        <Skeleton className="h-6 w-20" />
       </div>
+       <div className="space-y-2 pt-2">
+        <Skeleton className="h-4 w-24" />
+        <Skeleton className="h-4 w-full" />
+      </div>
+      <Skeleton className="h-10 w-full" />
     </div>
   );
 }

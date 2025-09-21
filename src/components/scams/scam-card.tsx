@@ -1,59 +1,130 @@
 
-import Image from 'next/image';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import {
+  Calendar,
+  TriangleAlert,
+  TrendingUp,
+  ExternalLink,
+  Eye,
+} from 'lucide-react';
+import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import type { Scam, User } from '@/lib/definitions';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import type { Scam } from '@/lib/definitions';
+import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface ScamCardProps {
   scam: Scam;
-  user: User | undefined;
   onCardClick: () => void;
 }
 
-export default function ScamCard({ scam, user, onCardClick }: ScamCardProps) {
-  const image = PlaceHolderImages.find(p => p.id === scam.imageId);
+const severityStyles: { [key: string]: string } = {
+  'Low - Annoyance': 'bg-blue-100 text-blue-800 border-blue-200',
+  'Medium - Moderate risk': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+  'High - Immediate danger': 'bg-orange-100 text-orange-800 border-orange-200',
+  'Critical - Financial loss occurred':
+    'bg-red-100 text-red-800 border-red-200',
+};
+
+export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
+  const severityLabel = scam.severity.split(' - ')[0];
 
   return (
     <Card
-      className="group h-full cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="group flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border-gray-200 bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg hover:ring-2 hover:ring-primary/50"
       onClick={onCardClick}
     >
-      {image && (
-        <CardHeader className="relative h-40 w-full p-0">
-          <Image
-            src={image.imageUrl}
-            alt={image.description}
-            data-ai-hint={image.imageHint}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute bottom-2 left-2 flex w-full justify-start">
-            <Badge variant="destructive">{scam.type}</Badge>
-          </div>
+      <div>
+        <CardHeader className="flex-row items-start justify-between p-0">
+          <CardTitle className="pr-2 font-headline text-lg font-bold leading-tight text-gray-800">
+            {scam.title}
+          </CardTitle>
+          <TriangleAlert className="h-5 w-5 flex-shrink-0 text-red-500" />
         </CardHeader>
-      )}
-      <CardContent className="p-4">
-        <h3 className="font-headline text-lg font-semibold leading-tight group-hover:text-primary">
-          {scam.title}
-        </h3>
-        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-          {scam.description}
-        </p>
-      </CardContent>
-      <CardFooter className="flex items-center justify-between p-4 pt-0 text-xs text-muted-foreground">
-        {user && (
-          <div className="flex items-center gap-2">
-            <Avatar className="h-6 w-6">
-              <AvatarImage src={user.avatarUrl} alt={user.name} />
-              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span>{user.name}</span>
+
+        <CardContent className="space-y-4 p-0 pt-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge
+              className={cn(
+                'border text-xs capitalize',
+                'bg-pink-100 text-pink-800 border-pink-200'
+              )}
+            >
+              {scam.platform}
+            </Badge>
+            <Badge
+              className={cn(
+                'border text-xs capitalize',
+                severityStyles[scam.severity]
+              )}
+            >
+              {severityLabel}
+            </Badge>
+            {scam.isTrending && (
+              <Badge
+                className={cn(
+                  'border text-xs',
+                  'bg-orange-100 text-orange-800 border-orange-200'
+                )}
+              >
+                <TrendingUp className="mr-1 h-3 w-3" />
+                Trending
+              </Badge>
+            )}
           </div>
-        )}
-        <span>{scam.country}</span>
+          <p className="line-clamp-3 text-sm text-gray-600">
+            {scam.description}
+          </p>
+
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              <span>{format(new Date(scam.createdAt), 'MMM d')}</span>
+            </div>
+            {scam.financialLoss && scam.financialLoss > 0 ? (
+              <div className="font-bold text-red-600">
+                $
+                {scam.financialLoss.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </div>
+            ) : null}
+          </div>
+
+          {scam.warningSigns && scam.warningSigns.length > 0 && (
+            <div className="text-sm">
+              <p className="mb-1 flex items-center font-semibold text-yellow-700">
+                <TriangleAlert className="mr-2 h-4 w-4" />
+                Warning Signs:
+              </p>
+              <ul className="list-inside list-disc space-y-1 pl-2 text-gray-600">
+                {scam.warningSigns.slice(0, 2).map((sign, index) => (
+                  <li key={index} className="truncate">
+                    {sign}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </CardContent>
+      </div>
+
+      <CardFooter className="mt-4 p-0">
+        <Button
+          variant="outline"
+          className="w-full gap-2 border-gray-300 bg-gray-50 hover:bg-gray-100"
+        >
+          <Eye className="h-4 w-4" />
+          View Details
+          <ExternalLink className="h-4 w-4 text-gray-400" />
+        </Button>
       </CardFooter>
     </Card>
   );
