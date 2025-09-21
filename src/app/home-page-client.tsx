@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react';
+import { ArrowRight, CheckCircle, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,7 @@ export default function HomePageClient({
       <section className="w-full bg-background">
         <div className="container mx-auto grid grid-cols-1 items-center gap-8 px-4 py-16 text-center md:py-32">
           <div className="flex flex-col items-center space-y-6">
+            <ShieldCheck className="h-24 w-24 text-primary" />
             <h1 className="font-headline text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
               Stay Ahead of Digital Deception
             </h1>
