@@ -198,7 +198,6 @@ export default function ScamDetailModal({
             {user && (
               <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user.avatarUrl} alt={user.name} />
                   <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <span>Reported by {user.name}</span>
@@ -303,10 +302,6 @@ export default function ScamDetailModal({
                   comments.map(({ comment: c, user: commentUser }) => (
                     <div key={c.id} className="group flex gap-4">
                       <Avatar>
-                        <AvatarImage
-                          src={commentUser?.avatarUrl}
-                          alt={commentUser?.name}
-                        />
                         <AvatarFallback>
                           {commentUser?.name.charAt(0) ?? 'U'}
                         </AvatarFallback>
@@ -373,10 +368,6 @@ export default function ScamDetailModal({
               {currentUser ? (
                 <div className="mt-8 flex gap-4">
                   <Avatar>
-                    <AvatarImage
-                      src={currentUser.avatarUrl}
-                      alt={currentUser.name}
-                    />
                     <AvatarFallback>
                       {currentUser.name.charAt(0)}
                     </AvatarFallback>
@@ -462,5 +453,3 @@ function CommentSkeleton() {
     </div>
   );
 }
-
-    

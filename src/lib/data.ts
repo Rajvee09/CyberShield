@@ -145,13 +145,11 @@ export async function addScam(scamData: Omit<Scam, 'id' | 'createdAt' | 'imageId
   return newScam;
 }
 
-export async function addUser(userData: Omit<User, 'id' | 'avatarUrl'>): Promise<User> {
+export async function addUser(userData: Omit<User, 'id'>): Promise<User> {
   await delay(200);
   const newUser: User = {
     ...userData,
     id: `user-${Date.now()}`,
-    // Generate a random avatar
-    avatarUrl: `https://i.pravatar.cc/150?u=user-${Date.now()}`,
   };
   users.push(newUser);
   console.log('New user created:', newUser);
@@ -160,7 +158,7 @@ export async function addUser(userData: Omit<User, 'id' | 'avatarUrl'>): Promise
 
 export async function updateUser(
   userId: string,
-  updateData: Partial<Pick<User, 'name' | 'avatarUrl'>>
+  updateData: Partial<Pick<User, 'name'>>
 ): Promise<User | undefined> {
   await delay(300);
   const allUsers = users as User[];

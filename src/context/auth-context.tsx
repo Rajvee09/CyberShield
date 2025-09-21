@@ -19,7 +19,7 @@ import { logoutAction } from '@/app/auth/actions';
 interface AuthContextType {
   user: User | null;
   logout: () => void;
-  updateUserProfile: (data: { name: string; avatarUrl: string }) => Promise<boolean>;
+  updateUserProfile: (data: { name: string }) => Promise<boolean>;
   syncUser: (user: User) => void;
   isLoading: boolean;
 }
@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
   
-  const updateUserProfile = async (data: { name: string; avatarUrl: string }) => {
+  const updateUserProfile = async (data: { name: string }) => {
     if (!user) return false;
     setIsLoading(true);
     try {

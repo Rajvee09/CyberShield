@@ -4,28 +4,24 @@
     "id": "user-1",
     "name": "Alex Johnson",
     "email": "alex.j@example.com",
-    "password": "password123",
-    "avatarUrl": "https://i.pravatar.cc/150?u=user-1"
+    "password": "password123"
   },
   {
     "id": "user-2",
     "name": "Maria Garcia",
     "email": "maria.g@example.com",
-    "password": "password123",
-    "avatarUrl": "https://i.pravatar.cc/150?u=user-2"
+    "password": "password123"
   },
   {
     "id": "user-3",
     "name": "Chen Wei",
     "email": "chen.w@example.com",
-    "password": "password123",
-    "avatarUrl": "https://i.pravatar.cc/150?u=user-3"
+    "password": "password123"
   },
   {
     "id": "user-4",
     "name": "Fatima Al-Sayed",
     "email": "fatima.a@example.com",
-    "password": "password123",
-    "avatarUrl": "https://i.pravatar.cc/150?u=user-4"
+    "password": "password123"
   }
 ]

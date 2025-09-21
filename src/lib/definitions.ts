@@ -39,7 +39,6 @@ export type User = {
   name: string;
   email: string;
   password?: string; // Should be hashed in a real app
-  avatarUrl: string;
 };
 
 export type Comment = {
