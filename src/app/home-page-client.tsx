@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +12,7 @@ import TrendingScamsCarousel from '@/components/scams/trending-scams-carousel';
 import ScamCard from '@/components/scams/scam-card';
 import type { Scam, User } from '@/lib/definitions';
 import ScamDetailModal from '@/components/scams/scam-detail-modal';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type ScamWithUser = {
   scam: Scam;
@@ -29,13 +31,14 @@ export default function HomePageClient({
   users,
 }: HomePageClientProps) {
   const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
+  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-image');
+
 
   return (
     <div className="flex flex-col">
       <section className="w-full bg-background">
-        <div className="container mx-auto grid grid-cols-1 items-center gap-8 px-4 py-16 text-center md:py-32">
-          <div className="flex flex-col items-center space-y-6">
-            <ShieldCheck className="h-24 w-24 text-primary" />
+        <div className="container mx-auto grid grid-cols-1 items-center gap-12 px-4 py-16 text-center md:grid-cols-2 md:py-24">
+          <div className="order-2 flex flex-col items-center space-y-6 md:order-1 md:items-start md:text-left">
             <h1 className="font-headline text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
               Stay Ahead of Digital Deception
             </h1>
@@ -56,6 +59,19 @@ export default function HomePageClient({
                 </Link>
               </Button>
             </div>
+          </div>
+           <div className="order-1 flex justify-center md:order-2">
+            {heroImage && (
+              <Image
+                src={heroImage.imageUrl}
+                alt={heroImage.description}
+                width={600}
+                height={400}
+                className="rounded-lg shadow-2xl"
+                data-ai-hint={heroImage.imageHint}
+                priority
+              />
+            )}
           </div>
         </div>
       </section>
