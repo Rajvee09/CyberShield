@@ -1,7 +1,6 @@
 
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
@@ -10,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import TrendingScamsCarousel from '@/components/scams/trending-scams-carousel';
 import ScamCard from '@/components/scams/scam-card';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Scam, User } from '@/lib/definitions';
 import ScamDetailModal from '@/components/scams/scam-detail-modal';
 
@@ -32,17 +30,15 @@ export default function HomePageClient({
 }: HomePageClientProps) {
   const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
 
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-image');
-
   return (
     <div className="flex flex-col">
       <section className="w-full bg-background">
-        <div className="container mx-auto grid grid-cols-1 items-center gap-8 px-4 py-12 md:grid-cols-2 md:py-24 lg:gap-16">
-          <div className="flex flex-col items-start space-y-6">
+        <div className="container mx-auto grid grid-cols-1 items-center gap-8 px-4 py-16 text-center md:py-32">
+          <div className="flex flex-col items-center space-y-6">
             <h1 className="font-headline text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
               Stay Ahead of Digital Deception
             </h1>
-            <p className="max-w-[600px] text-lg text-muted-foreground md:text-xl">
+            <p className="max-w-[700px] text-lg text-muted-foreground md:text-xl">
               CyberShield is your community-powered guide to navigating the
               digital world safely. Analyze suspicious messages, learn about
               emerging threats, and report scams to protect others.
@@ -59,18 +55,6 @@ export default function HomePageClient({
                 </Link>
               </Button>
             </div>
-          </div>
-          <div className="flex items-center justify-center">
-            {heroImage && (
-              <Image
-                src={heroImage.imageUrl}
-                width={600}
-                height={400}
-                alt={heroImage.description}
-                data-ai-hint={heroImage.imageHint}
-                className="overflow-hidden rounded-xl object-cover shadow-2xl"
-              />
-            )}
           </div>
         </div>
       </section>
