@@ -38,7 +38,7 @@ export default function HomePageClient({
     <div className="flex flex-col">
       <section className="w-full bg-background">
         <div className="container mx-auto grid grid-cols-1 items-center gap-12 px-4 py-16 text-center md:grid-cols-2 md:py-24">
-          <div className="order-2 flex flex-col items-center space-y-6 md:order-1 md:items-start md:text-left">
+          <div className="flex flex-col items-center space-y-6 md:items-start md:text-left">
             <h1 className="font-headline text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
               Stay Ahead of Digital Deception
             </h1>
@@ -60,7 +60,7 @@ export default function HomePageClient({
               </Button>
             </div>
           </div>
-           <div className="order-1 flex justify-center md:order-2">
+           <div className="flex justify-center">
             {heroImage && (
               <Image
                 src={heroImage.imageUrl}
