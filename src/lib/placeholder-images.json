@@ -3,9 +3,9 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A sketch-style graphic with the text 'SCAM ALERT!' and icons representing fraud, email, login, and financial loss.",
-      "imageUrl": "https://picsum.photos/seed/cybersecurity-warning/600/400",
-      "imageHint": "scam alert"
+      "description": "A person's hands typing on a laptop keyboard with a digital lock overlay, representing cybersecurity.",
+      "imageUrl": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=600&auto=format&fit=crop",
+      "imageHint": "cybersecurity protection"
     },
     {
       "id": "carousel-1",
