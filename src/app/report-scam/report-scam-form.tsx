@@ -83,11 +83,13 @@ const FormSchema = z.object({
       message: 'Description cannot be longer than 2000 characters.',
     }),
   financialLoss: z.string().optional(),
-  warningSigns: z.array(
-    z.object({
-      value: z.string().min(1, { message: 'Warning sign cannot be empty.' }),
-    })
-  ).optional(),
+  warningSigns: z
+    .array(
+      z.object({
+        value: z.string().min(1, { message: 'Warning sign cannot be empty.' }),
+      })
+    )
+    .optional(),
 });
 
 export default function ReportScamForm() {
@@ -119,7 +121,6 @@ export default function ReportScamForm() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
-    // Simulate API call
     console.log('Scam Report Submitted:', data);
     await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -146,10 +147,14 @@ export default function ReportScamForm() {
             <Skeleton className="h-10 w-full" />
             <Skeleton className="h-10 w-full" />
           </div>
+          <Skeleton className="h-10 w-full" />
           <Skeleton className="h-24 w-full" />
           <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-28" />
+          <div className="space-y-4">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-36" />
+          </div>
+          <Skeleton className="h-10 w-32" />
         </CardContent>
       </Card>
     );
