@@ -40,15 +40,15 @@ export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
       className="group flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded-lg border bg-card text-card-foreground shadow-md transition-all duration-300 hover:shadow-lg hover:ring-2 hover:ring-primary/50"
       onClick={onCardClick}
     >
-      <div>
-        <CardHeader className="flex-row items-start justify-between p-0">
-          <CardTitle className="pr-2 font-headline text-lg font-bold leading-tight">
+      <div className="flex h-full flex-col p-4">
+        <CardHeader className="flex-row items-start justify-between gap-2 p-0">
+          <CardTitle className="font-headline text-lg font-bold leading-tight">
             {scam.title}
           </CardTitle>
           <TriangleAlert className="h-5 w-5 flex-shrink-0 text-red-500" />
         </CardHeader>
 
-        <CardContent className="space-y-4 p-0 pt-3">
+        <CardContent className="flex-grow space-y-4 p-0 pt-3">
           <div className="flex flex-wrap items-center gap-2">
             <Badge
               className={cn(
@@ -114,18 +114,15 @@ export default function ScamCard({ scam, onCardClick }: ScamCardProps) {
             </div>
           )}
         </CardContent>
-      </div>
 
-      <CardFooter className="mt-4 p-0">
-        <Button
-          variant="outline"
-          className="w-full gap-2"
-        >
-          <Eye className="h-4 w-4" />
-          View Details
-          <ExternalLink className="h-4 w-4 text-muted-foreground" />
-        </Button>
-      </CardFooter>
+        <CardFooter className="mt-auto p-0 pt-4">
+          <Button variant="outline" className="w-full gap-2">
+            <Eye className="h-4 w-4" />
+            View Details
+            <ExternalLink className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </CardFooter>
+      </div>
     </Card>
   );
 }
