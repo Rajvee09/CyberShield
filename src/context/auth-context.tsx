@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return false;
     setIsLoading(true);
     try {
-      const updatedUser = await updateUser(user.id, data);
+      const updatedUser = await updateUser(user.id, { name: data.name, avatarUrl: data.avatarUrl });
       if (updatedUser) {
         setUser(updatedUser);
         localStorage.setItem('cyber-shield-user', JSON.stringify(updatedUser));
