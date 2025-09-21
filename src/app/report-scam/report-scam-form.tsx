@@ -124,10 +124,6 @@ export default function ReportScamForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -145,6 +141,10 @@ export default function ReportScamForm() {
     control: form.control,
     name: 'warningSigns',
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
