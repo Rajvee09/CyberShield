@@ -93,7 +93,10 @@ export default function AuthPage() {
             </CardHeader>
             <CardContent>
               <Form {...loginForm}>
-                <form action={loginFormAction} className="space-y-6">
+                <form
+                  action={loginFormAction}
+                  className="space-y-6"
+                >
                    {loginState.message && (
                      <Alert variant="destructive">
                        <TriangleAlert className="h-4 w-4" />
@@ -153,7 +156,10 @@ export default function AuthPage() {
             </CardHeader>
             <CardContent>
               <Form {...signupForm}>
-                <form action={signupFormAction} className="space-y-6">
+                <form
+                  action={signupFormAction}
+                  className="space-y-6"
+                >
                   {signupState.message && (
                     <Alert variant="destructive">
                       <TriangleAlert className="h-4 w-4" />
