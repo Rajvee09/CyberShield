@@ -20,14 +20,14 @@ const signupSchema = z.object({
 // This is a helper function to set the cookie and update client-side storage
 const loginUser = (user: any) => {
   const userString = JSON.stringify(user);
+  // This httpOnly cookie is for the server to recognize the user.
   cookies().set('cyber-shield-user', userString, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     maxAge: 60 * 60 * 24 * 7, // One week
     path: '/',
   });
-  // We also set a value in localStorage for the client-side AuthProvider to sync up.
-  // This is a common pattern when mixing server actions with client-side context.
+  // This client-side cookie is for the AuthProvider to sync state.
   cookies().set('cyber-shield-user-client', userString, {
     maxAge: 60 * 60 * 24 * 7,
     path: '/',
@@ -90,5 +90,11 @@ export async function signupAction(
     return { message: 'An error occurred during sign up.' };
   }
 
+  redirect('/');
+}
+
+export async function logoutAction() {
+  cookies().delete('cyber-shield-user');
+  cookies().delete('cyber-shield-user-client');
   redirect('/');
 }

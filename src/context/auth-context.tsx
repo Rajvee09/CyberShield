@@ -7,11 +7,13 @@ import {
   useState,
   useEffect,
   type ReactNode,
+  startTransition,
 } from 'react';
 import type { User } from '@/lib/definitions';
 import { updateUser } from '@/lib/data';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { logoutAction } from '@/app/auth/actions';
 
 interface AuthContextType {
   user: User | null;
@@ -22,6 +24,15 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// A helper function to get a cookie by name
+const getCookie = (name: string): string | undefined => {
+  if (typeof document === 'undefined') return undefined;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+};
+
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,21 +40,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // This function runs when the component mounts to check for a logged-in user
-    // in localStorage. This is part of how we keep the user logged in across page loads.
     const checkUser = () => {
       setIsLoading(true);
       try {
-        const storedUser = localStorage.getItem('cyber-shield-user-client');
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
+        const storedUserCookie = getCookie('cyber-shield-user-client');
+        if (storedUserCookie) {
+          const parsedUser = JSON.parse(decodeURIComponent(storedUserCookie));
           setUser(parsedUser);
         } else {
           setUser(null);
         }
       } catch (error) {
-        console.error('Failed to parse user from localStorage', error);
-        localStorage.removeItem('cyber-shield-user-client');
+        console.error('Failed to parse user from cookie', error);
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -51,25 +59,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
     
     checkUser();
-
-    // After a server action (login/signup), the page refreshes.
-    // The new user cookie should be set, but our client-side state needs to sync.
-    // This event listener helps sync state without a full page reload if we were
-    // doing client-side routing. With server-side redirects, `checkUser` on mount is key.
-    window.addEventListener('storage', checkUser);
-    return () => {
-      window.removeEventListener('storage', checkUser);
-    };
   }, []);
 
   const logout = () => {
     setUser(null);
-    // Also clear the cookie by setting its expiration to the past
-    document.cookie = 'cyber-shield-user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    localStorage.removeItem('cyber-shield-user-client');
-    toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
-    router.push('/');
-    router.refresh(); // Ensures server components re-render with the user logged out
+    startTransition(() => {
+      logoutAction().then(() => {
+        toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
+        router.refresh();
+      });
+    });
   };
   
   const updateUserProfile = async (data: { name: string; avatarUrl: string }) => {
@@ -79,8 +78,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const updatedUser = await updateUser(user.id, data);
       if (updatedUser) {
         setUser(updatedUser);
-        // Also update the local storage to persist the changes
-        localStorage.setItem('cyber-shield-user-client', JSON.stringify(updatedUser));
+        
+        // Update the client-side cookie after profile update
+        const userString = JSON.stringify(updatedUser);
+        document.cookie = `cyber-shield-user-client=${encodeURIComponent(userString)}; max-age=${60 * 60 * 24 * 7}; path=/`;
+
         return true;
       }
       return false;
