@@ -4,6 +4,11 @@ import scams from '@/data/scams.json';
 import users from '@/data/users.json';
 import comments from '@/data/comments.json';
 
+// In a real app, these would be database calls.
+// Here, we're just modifying in-memory arrays.
+// For persistence in this example, we'd need to write back to the JSON files,
+// which is outside the scope of this simulation.
+
 // Simulate a database delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -89,6 +94,12 @@ export async function getUserById(id: string): Promise<User | undefined> {
   return allUsers.find(user => user.id === id);
 }
 
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  await delay(10);
+  const allUsers = users as User[];
+  return allUsers.find(user => user.email === email);
+}
+
 export async function getCommentsByScamId(
   scamId: string
 ): Promise<Comment[]> {
@@ -115,7 +126,34 @@ export async function addComment(
     createdAt: new Date().toISOString(),
   };
   // In a real app, you'd save this to your database.
-  // For now, we just log it and return it.
+  // We'll push to our "in-memory" array.
+  comments.unshift(newComment);
   console.log('New comment added:', newComment);
   return newComment;
+}
+
+export async function addScam(scamData: Omit<Scam, 'id' | 'createdAt' | 'imageId'>): Promise<Scam> {
+  await delay(500);
+  const newScam: Scam = {
+    ...scamData,
+    id: `scam-${Date.now()}`,
+    createdAt: new Date().toISOString(),
+    imageId: `carousel-${Math.floor(Math.random() * 5) + 1}`, // Assign a random image for now
+  };
+  scams.unshift(newScam);
+  console.log('New scam reported:', newScam);
+  return newScam;
+}
+
+export async function addUser(userData: Omit<User, 'id' | 'avatarUrl'>): Promise<User> {
+  await delay(200);
+  const newUser: User = {
+    ...userData,
+    id: `user-${Date.now()}`,
+    // Generate a random avatar
+    avatarUrl: `https://i.pravatar.cc/150?u=user-${Date.now()}`,
+  };
+  users.push(newUser);
+  console.log('New user created:', newUser);
+  return newUser;
 }

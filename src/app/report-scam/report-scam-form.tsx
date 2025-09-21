@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
@@ -5,6 +6,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Loader2, Send, PlusCircle, XCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -29,6 +31,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FileDragDrop } from '@/components/ui/file-drag-drop';
+import { useAuth } from '@/context/auth-context';
+import { addScam } from '@/lib/data';
 
 const scamTypes = [
   'Phishing',
@@ -106,6 +110,7 @@ const FormSchema = z.object({
       })
     )
     .optional(),
+  country: z.string().min(2, { message: 'Please enter a country.' }),
 });
 
 function FormSkeleton() {
@@ -139,6 +144,8 @@ export default function ReportScamForm() {
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -155,6 +162,7 @@ export default function ReportScamForm() {
       financialLoss: '',
       warningSigns: [{ value: '' }],
       attachments: [],
+      country: '',
     },
   });
 
@@ -163,32 +171,52 @@ export default function ReportScamForm() {
     name: 'warningSigns',
   });
 
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Not Logged In',
+        description: 'You must be logged in to report a scam.',
+      });
+      return;
+    }
+    setIsLoading(true);
+
+    try {
+      await addScam({
+        title: data.title,
+        description: data.description,
+        country: data.country,
+        type: data.type,
+        platform: data.platform,
+        severity: data.severity,
+        warningSigns: data.warningSigns?.map(ws => ws.value).filter(ws => ws) || [],
+        financialLoss: data.financialLoss ? parseFloat(data.financialLoss) : 0,
+        authorId: user.id,
+      });
+
+      toast({
+        title: 'Report Submitted!',
+        description:
+          'Thank you for helping keep the community safe. Your report has been received.',
+      });
+      form.reset();
+      // Redirect to community page after successful submission
+      router.push('/community');
+    } catch (error) {
+      console.error('Failed to submit report:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Submission Failed',
+        description: 'There was an error submitting your report. Please try again.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  
   if (!isClient) {
     return <FormSkeleton />;
-  }
-
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    setIsLoading(true);
-    console.log('Scam Report Submitted:', data);
-
-    // Simulate file uploads
-    if (data.attachments && data.attachments.length > 0) {
-      for (const file of data.attachments) {
-        console.log(`Uploading ${file.name}...`);
-        await new Promise(resolve => setTimeout(resolve, 500));
-        console.log(`${file.name} uploaded.`);
-      }
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    setIsLoading(false);
-    toast({
-      title: 'Report Submitted!',
-      description:
-        'Thank you for helping keep the community safe. Your report has been received.',
-    });
-    form.reset();
   }
 
   return (
@@ -273,33 +301,48 @@ export default function ReportScamForm() {
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="severity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Severity Level</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="severity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Severity Level</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a severity level" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {severityLevels.map(level => (
+                          <SelectItem key={level} value={level}>
+                            {level}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country *</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a severity level" />
-                      </SelectTrigger>
+                      <Input placeholder="e.g., USA, Canada" {...field} />
                     </FormControl>
-                    <SelectContent>
-                      {severityLevels.map(level => (
-                        <SelectItem key={level} value={level}>
-                          {level}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="description"
@@ -344,7 +387,7 @@ export default function ReportScamForm() {
                 <FormItem>
                   <FormLabel>Financial Loss (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="Amount lost (in dollars)" {...field} />
+                    <Input type="number" placeholder="Amount lost (in dollars)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

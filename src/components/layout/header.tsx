@@ -1,3 +1,6 @@
+
+'use client';
+
 import Link from 'next/link';
 import { Menu, ShieldAlert, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +11,17 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { useAuth } from '@/context/auth-context';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { useRouter } from 'next/navigation';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -18,6 +32,13 @@ const navLinks = [
 ];
 
 export function Header() {
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  };
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -47,10 +68,39 @@ export function Header() {
               <ShieldAlert className="mr-2 h-4 w-4" /> Report a Scam
             </Link>
           </Button>
-          <Button variant="outline">
-            <User className="mr-2 h-4 w-4" />
-            Login / Sign Up
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={user.avatarUrl} alt={user.name} />
+                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button asChild variant="outline">
+              <Link href="/auth">
+                <User className="mr-2 h-4 w-4" />
+                Login / Sign Up
+              </Link>
+            </Button>
+          )}
         </div>
 
         <div className="md:hidden">
@@ -88,10 +138,25 @@ export function Header() {
                 </div>
 
                 <div className="mt-auto flex flex-col gap-4 pt-8">
-                   <Button variant="outline">
-                    <User className="mr-2 h-4 w-4" />
-                    Login / Sign Up
-                  </Button>
+                  {user ? (
+                     <div className="flex items-center gap-4">
+                      <Avatar>
+                        <AvatarImage src={user.avatarUrl} alt={user.name} />
+                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div className='w-full'>
+                        <p className="text-sm font-medium">{user.name}</p>
+                        <Button variant="link" onClick={handleLogout} className="p-0 h-auto text-muted-foreground">Logout</Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <Button asChild variant="outline">
+                       <Link href="/auth">
+                        <User className="mr-2 h-4 w-4" />
+                        Login / Sign Up
+                      </Link>
+                    </Button>
+                  )}
                   <div className="flex justify-center">
                     <ThemeToggle />
                   </div>

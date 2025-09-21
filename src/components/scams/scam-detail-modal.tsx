@@ -15,6 +15,7 @@ import {
   TriangleAlert,
   ShieldAlert,
   FileWarning,
+  LogIn,
 } from 'lucide-react';
 import {
   Dialog,
@@ -32,6 +33,8 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Separator } from '../ui/separator';
+import { useAuth } from '@/context/auth-context';
+import Link from 'next/link';
 
 interface ScamDetailModalProps {
   scam: Scam;
@@ -62,18 +65,11 @@ export default function ScamDetailModal({
   isOpen,
   onOpenChange,
 }: ScamDetailModalProps) {
+  const { user: currentUser } = useAuth();
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [newComment, setNewComment] = useState('');
   const [isPosting, setIsPosting] = useState(false);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
-
-  // For optimistic updates, we assume the current user is Alex Johnson
-  // In a real app, you would get this from an auth context
-  const currentUser: User = {
-    id: 'user-1',
-    name: 'Alex Johnson',
-    avatarUrl: 'https://i.pravatar.cc/150?u=user-1',
-  };
 
   useEffect(() => {
     async function loadComments() {
@@ -94,7 +90,7 @@ export default function ScamDetailModal({
   }, [isOpen, scam.id]);
 
   const handlePostComment = async () => {
-    if (!newComment.trim()) return;
+    if (!newComment.trim() || !currentUser) return;
 
     setIsPosting(true);
 
@@ -110,7 +106,7 @@ export default function ScamDetailModal({
       user: currentUser,
     };
 
-    setComments(prev => [...prev, optimisticComment]);
+    setComments(prev => [optimisticComment, ...prev]);
     setNewComment('');
 
     try {
@@ -283,32 +279,45 @@ export default function ScamDetailModal({
                 )}
               </div>
 
-              <div className="mt-8 flex gap-4">
-                <Avatar>
-                  <AvatarImage
-                    src={currentUser.avatarUrl}
-                    alt={currentUser.name}
-                  />
-                  <AvatarFallback>
-                    {currentUser.name.charAt(0)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="w-full space-y-2">
-                  <Textarea
-                    placeholder="Add a comment..."
-                    value={newComment}
-                    onChange={e => setNewComment(e.target.value)}
-                    disabled={isPosting}
-                  />
-                  <Button
-                    onClick={handlePostComment}
-                    disabled={isPosting || !newComment.trim()}
-                  >
-                    {isPosting ? 'Posting...' : 'Post Comment'}{' '}
-                    <Send className="ml-2 h-4 w-4" />
+             {currentUser ? (
+                <div className="mt-8 flex gap-4">
+                  <Avatar>
+                    <AvatarImage
+                      src={currentUser.avatarUrl}
+                      alt={currentUser.name}
+                    />
+                    <AvatarFallback>
+                      {currentUser.name.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="w-full space-y-2">
+                    <Textarea
+                      placeholder="Add a comment..."
+                      value={newComment}
+                      onChange={e => setNewComment(e.target.value)}
+                      disabled={isPosting}
+                    />
+                    <Button
+                      onClick={handlePostComment}
+                      disabled={isPosting || !newComment.trim()}
+                    >
+                      {isPosting ? 'Posting...' : 'Post Comment'}{' '}
+                      <Send className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-8 rounded-lg border bg-secondary/30 p-6 text-center">
+                  <h3 className="font-headline text-lg font-semibold">Join the Conversation</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">You must be logged in to post a comment.</p>
+                  <Button asChild className="mt-4">
+                    <Link href="/auth">
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Login or Sign Up
+                    </Link>
                   </Button>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>

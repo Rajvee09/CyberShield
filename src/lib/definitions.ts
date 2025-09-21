@@ -1,4 +1,5 @@
 
+
 export type Scam = {
   id: string;
   title: string;
@@ -36,6 +37,8 @@ export type Scam = {
 export type User = {
   id: string;
   name: string;
+  email: string;
+  password?: string; // Should be hashed in a real app
   avatarUrl: string;
 };
 
