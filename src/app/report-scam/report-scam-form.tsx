@@ -165,8 +165,7 @@ export default function ReportScamForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <FormField
+            <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
@@ -182,6 +181,7 @@ export default function ReportScamForm() {
                   </FormItem>
                 )}
               />
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="platform"
@@ -209,9 +209,7 @@ export default function ReportScamForm() {
                   </FormItem>
                 )}
               />
-            </div>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <FormField
+               <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => (
@@ -224,7 +222,7 @@ export default function ReportScamForm() {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="What type of scam is this?" />
-                        </SelectTrigger>
+                        </Trigger>
                       </FormControl>
                       <SelectContent>
                         {scamTypes.map(type => (
@@ -238,7 +236,8 @@ export default function ReportScamForm() {
                   </FormItem>
                 )}
               />
-              <FormField
+            </div>
+            <FormField
                 control={form.control}
                 name="severity"
                 render={({ field }) => (
@@ -265,7 +264,6 @@ export default function ReportScamForm() {
                   </FormItem>
                 )}
               />
-            </div>
 
             <FormField
               control={form.control}
