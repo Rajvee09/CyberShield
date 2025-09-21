@@ -1,10 +1,11 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Loader2, Send } from 'lucide-react';
+import { Loader2, Send, PlusCircle, XCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -37,22 +38,56 @@ const scamTypes = [
   'Delivery',
 ] as const;
 
+const platforms = [
+  'Email',
+  'Website',
+  'Social Media',
+  'Phone Call',
+  'Text Message',
+  'Instagram',
+  'Facebook',
+  'Flipkart',
+  'Blinkit',
+  'Zepto',
+  'LinkedIn',
+  'Freelancing Website',
+  'Amazon',
+  'Meesho',
+] as const;
+
+const severityLevels = [
+  'Low - Annoyance',
+  'Medium - Moderate risk',
+  'High - Immediate danger',
+  'Critical - Financial loss occurred',
+] as const;
+
 const FormSchema = z.object({
   title: z
     .string()
     .min(10, { message: 'Title must be at least 10 characters.' })
     .max(100, { message: 'Title cannot be longer than 100 characters.' }),
-  description: z
-    .string()
-    .min(50, { message: 'Description must be at least 50 characters.' })
-    .max(2000, { message: 'Description cannot be longer than 2000 characters.' }),
   type: z.enum(scamTypes, {
     errorMap: () => ({ message: 'Please select a valid scam type.' }),
   }),
-  country: z
+  platform: z.enum(platforms, {
+    errorMap: () => ({ message: 'Please select a platform.' }),
+  }),
+  severity: z.enum(severityLevels, {
+    errorMap: () => ({ message: 'Please select a severity level.' }),
+  }),
+  description: z
     .string()
-    .min(2, { message: 'Please enter a valid country.' })
-    .max(50, { message: 'Country name is too long.' }),
+    .min(50, { message: 'Description must be at least 50 characters.' })
+    .max(2000, {
+      message: 'Description cannot be longer than 2000 characters.',
+    }),
+  financialLoss: z.string().optional(),
+  warningSigns: z.array(
+    z.object({
+      value: z.string().min(1, { message: 'Warning sign cannot be empty.' }),
+    })
+  ).optional(),
 });
 
 export default function ReportScamForm() {
@@ -69,15 +104,22 @@ export default function ReportScamForm() {
     defaultValues: {
       title: '',
       description: '',
-      country: '',
       type: undefined,
+      platform: undefined,
+      severity: 'Medium - Moderate risk',
+      financialLoss: '',
+      warningSigns: [{ value: '' }],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: 'warningSigns',
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
-    // Here you would typically send the data to your backend/API
-    // For this demo, we'll just simulate a delay and show a success message.
+    // Simulate API call
     console.log('Scam Report Submitted:', data);
     await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -95,14 +137,17 @@ export default function ReportScamForm() {
       <Card className="shadow-lg">
         <CardHeader>
           <CardTitle className="font-headline text-2xl">
-            New Scam Report
+            Scam Report Form
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <Skeleton className="h-10 w-1/2" />
           <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
           <Skeleton className="h-24 w-full" />
+          <Skeleton className="h-10 w-full" />
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-10 w-28" />
         </CardContent>
@@ -110,74 +155,127 @@ export default function ReportScamForm() {
     );
   }
 
-
   return (
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="font-headline text-2xl">
-          New Scam Report
+          Scam Report Form
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Scam Title</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="e.g., 'Urgent Package Delivery Text'"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    A short, descriptive title for the scam.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type of Scam</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Scam Title *</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a category..." />
-                      </SelectTrigger>
+                      <Input
+                        placeholder="Brief title describing the scam"
+                        {...field}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {scamTypes.map(type => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="platform"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Platform *</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Where did this scam occur?" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {platforms.map(p => (
+                          <SelectItem key={p} value={p}>
+                            {p}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Scam Type *</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="What type of scam is this?" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {scamTypes.map(type => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="severity"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Severity Level</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a severity level" />
+                        </Trigger>
+                      </FormControl>
+                      <SelectContent>
+                        {severityLevels.map(level => (
+                          <SelectItem key={level} value={level}>
+                            {level}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Detailed Description *</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe the scam in detail. What happened? What were the red flags?"
+                      placeholder="Provide a detailed description of the scam, including how it works, what the scammers said/did, and any other relevant details..."
                       className="min-h-[150px] resize-y"
                       {...field}
                     />
@@ -189,17 +287,63 @@ export default function ReportScamForm() {
 
             <FormField
               control={form.control}
-              name="country"
+              name="financialLoss"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country of Occurrence</FormLabel>
+                  <FormLabel>Financial Loss (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., 'United States'" {...field} />
+                    <Input placeholder="Amount lost (in dollars)" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div className="space-y-4">
+              <FormLabel>Warning Signs</FormLabel>
+              <FormDescription>
+                What should people look out for to identify this scam?
+              </FormDescription>
+              {fields.map((field, index) => (
+                <FormField
+                  key={field.id}
+                  control={form.control}
+                  name={`warningSigns.${index}.value`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center gap-2">
+                        <FormControl>
+                          <Input
+                            placeholder={`Warning sign ${index + 1}`}
+                            {...field}
+                          />
+                        </FormControl>
+                        {fields.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => remove(index)}
+                          >
+                            <XCircle className="h-5 w-5 text-muted-foreground" />
+                          </Button>
+                        )}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => append({ value: '' })}
+              >
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Warning Sign
+              </Button>
+            </div>
 
             <Button
               type="submit"
