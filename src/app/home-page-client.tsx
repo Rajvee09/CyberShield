@@ -3,8 +3,8 @@
 
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, TrendingUp, ShieldCheck } from 'lucide-react';
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState, useRef } from 'react';
+import Autoplay from 'embla-carousel-autoplay';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import TrendingScamsCarousel from '@/components/scams/trending-scams-carousel';
 import ScamCard from '@/components/scams/scam-card';
 import type { Scam, User } from '@/lib/definitions';
 import ScamDetailModal from '@/components/scams/scam-detail-modal';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type ScamWithUser = {
@@ -31,7 +32,8 @@ export default function HomePageClient({
   users,
 }: HomePageClientProps) {
   const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
-  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-image');
+  const autoplayPlugin = useRef(Autoplay({ delay: 3000, stopOnInteraction: true }));
+  const placeholderImages = PlaceHolderImages;
 
   return (
     <div className="flex flex-col">
@@ -60,16 +62,24 @@ export default function HomePageClient({
             </div>
           </div>
           <div className="flex items-center justify-center">
-            {heroImage && (
-              <Image
-                src={heroImage.imageUrl}
-                alt={heroImage.description}
-                width={600}
-                height={400}
-                data-ai-hint={heroImage.imageHint}
-                className="rounded-lg shadow-2xl"
-              />
-            )}
+            <Carousel
+              plugins={[autoplayPlugin.current]}
+              className="w-full max-w-xl"
+              onMouseEnter={autoplayPlugin.current.stop}
+              onMouseLeave={autoplayPlugin.current.reset}
+            >
+              <CarouselContent>
+                {trendingScams.map(scam => {
+                   const user = users.find(u => u.id === scam.authorId);
+                  return (
+                  <CarouselItem key={scam.id}>
+                    <div className="p-1">
+                      <ScamCard scam={scam} onCardClick={() => setSelectedScam({ scam, user })} />
+                    </div>
+                  </CarouselItem>
+                )})}
+              </CarouselContent>
+            </Carousel>
           </div>
         </div>
       </section>
