@@ -9,7 +9,7 @@ type ScamWithUser = {
 };
 
 export default async function Home() {
-  const trendingScams = await getTrendingScams({ limit: 8 });
+  const trendingScams = await getTrendingScams({ limit: 5 });
   const recentScams = await getRecentScams(4);
   const users = await getAllUsers();
   const recentScamsWithUsers = await Promise.all(

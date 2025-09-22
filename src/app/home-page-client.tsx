@@ -3,9 +3,8 @@
 
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, TrendingUp, ShieldCheck } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import Autoplay from 'embla-carousel-autoplay';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,11 +12,7 @@ import TrendingScamsCarousel from '@/components/scams/trending-scams-carousel';
 import ScamCard from '@/components/scams/scam-card';
 import type { Scam, User } from '@/lib/definitions';
 import ScamDetailModal from '@/components/scams/scam-detail-modal';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type ScamWithUser = {
   scam: Scam;
@@ -36,18 +31,13 @@ export default function HomePageClient({
   users,
 }: HomePageClientProps) {
   const [selectedScam, setSelectedScam] = useState<ScamWithUser | null>(null);
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 2500, stopOnInteraction: true })
-  );
-  
-  const trendingSlides = trendingScams.slice(0, 5);
-  const heroSlides = trendingScams;
+  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-image');
 
   return (
     <div className="flex flex-col">
       <section className="w-full bg-background py-12 md:py-16">
-        <div className="container mx-auto grid grid-cols-1 items-center gap-12 px-4 md:grid-cols-5">
-          <div className="flex flex-col items-center space-y-6 text-center md:col-span-2 md:items-start md:text-left">
+        <div className="container mx-auto grid grid-cols-1 items-center gap-12 px-4 md:grid-cols-2">
+          <div className="flex flex-col items-center space-y-6 text-center md:items-start md:text-left">
             <h1 className="font-headline text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl">
               Stay Ahead of Digital Deception
             </h1>
@@ -69,28 +59,17 @@ export default function HomePageClient({
               </Button>
             </div>
           </div>
-          <div className="md:col-span-3">
-             <Carousel
-              plugins={[autoplayPlugin.current]}
-              onMouseEnter={autoplayPlugin.current.stop}
-              onMouseLeave={autoplayPlugin.current.reset}
-              opts={{ align: 'start', loop: true }}
-              className="w-full"
-            >
-              <CarouselContent>
-                {heroSlides.map(scam => {
-                  const user = users.find(u => u.id === scam.authorId);
-                  return (
-                    <CarouselItem key={scam.id} className="p-2 lg:basis-1/2">
-                       <ScamCard
-                          scam={scam}
-                          onCardClick={() => setSelectedScam({ scam, user })}
-                        />
-                    </CarouselItem>
-                  );
-                })}
-              </CarouselContent>
-            </Carousel>
+          <div className="flex items-center justify-center">
+            {heroImage && (
+              <Image
+                src={heroImage.imageUrl}
+                alt={heroImage.description}
+                width={600}
+                height={400}
+                data-ai-hint={heroImage.imageHint}
+                className="rounded-lg shadow-2xl"
+              />
+            )}
           </div>
         </div>
       </section>
@@ -106,7 +85,7 @@ export default function HomePageClient({
             </p>
           </div>
           <TrendingScamsCarousel
-            scams={trendingSlides}
+            scams={trendingScams}
             users={users}
             onScamClick={(scam, user) => {
               setSelectedScam({ scam, user });
