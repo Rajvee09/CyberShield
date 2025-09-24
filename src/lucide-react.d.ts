@@ -53,6 +53,4 @@ declare module 'lucide-react' {
   export const X: FC<SVGProps<SVGSVGElement>>;
   export const XCircle: FC<SVGProps<SVGSVGElement>>;
 
-  // Add other icons you use here
-  // You can find all available icons at https://lucide.dev/
 }
