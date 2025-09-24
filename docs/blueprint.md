@@ -12,7 +12,7 @@
 - Dark Mode Option: Implement a toggle for users to switch between light and dark themes.
 
 Technology Stack
-Frontend: The project is a Next.js application built with React and TypeScript. It uses a responsive, card-based layout styled with Tailwind CSS.
+Frontend: The project is a Next.js application built with React and TypeScript. layout styled with Tailwind CSS.
 
 Backend: The application is designed to use Firebase as its backend-as-a-service. User authentication and data persistence are handled by Firebase services, although the current implementation uses local JSON files for data storage for simplicity.
 
