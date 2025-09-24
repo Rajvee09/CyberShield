@@ -4,12 +4,7 @@ import scams from '@/data/scams.json';
 import users from '@/data/users.json';
 import comments from '@/data/comments.json';
 
-// In a real app, these would be database calls.
-// Here, we're just modifying in-memory arrays.
-// For persistence in this example, we'd need to write back to the JSON files,
-// which is outside the scope of this simulation.
 
-// Simulate a database delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export async function getTrendingScams({
